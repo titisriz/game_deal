@@ -9,44 +9,45 @@ import 'package:game_deal/deals/deal_browser/presentation/deal_grid_tile_loading
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DealGridView extends ConsumerWidget {
-  DealGridView({
+  const DealGridView({
     Key? key,
     required this.state,
     required this.dealStateNotifier,
     required this.dealStoreStateNotifier,
     required this.canLoadNextPage,
   }) : super(key: key);
-  bool canLoadNextPage;
-  DealStoreStateNotifier dealStoreStateNotifier;
-  DealStateNotifier dealStateNotifier;
-  DealState state;
+  final bool canLoadNextPage;
+  final DealStoreStateNotifier dealStoreStateNotifier;
+  final DealStateNotifier dealStateNotifier;
+  final DealState state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dealFilterState = ref.watch(filterStateNotifierProvider);
     final filterStateNotifier = ref.watch(filterStateNotifierProvider.notifier);
+    bool _canLoadNextPage = canLoadNextPage;
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         final metrics = notification.metrics;
         final limit = metrics.maxScrollExtent - metrics.viewportDimension / 2;
-        if (canLoadNextPage && metrics.pixels >= limit) {
+        if (_canLoadNextPage && metrics.pixels >= limit) {
           filterStateNotifier.setFilter(dealFilterState.copyWith(
               pageNumber: dealFilterState.pageNumber + 1));
           final newDealFilterState = ref.watch(filterStateNotifierProvider);
           print('new dealFilterState ${newDealFilterState.pageNumber}');
           dealStateNotifier.getFilteredDeal(newDealFilterState);
-          canLoadNextPage = false;
+          _canLoadNextPage = false;
         }
 
         return false;
       },
       child: MasonryGridView.builder(
         physics: const BouncingScrollPhysics(),
-        // controller: scrollController,
         gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
         // crossAxisCount: 2,
+
         mainAxisSpacing: 5,
         crossAxisSpacing: 2,
         itemCount: state.map(

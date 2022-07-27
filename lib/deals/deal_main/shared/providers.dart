@@ -15,8 +15,24 @@ final recentDealStateNotifierProvider =
   (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
 );
 
-//TODO : popular game deals provider
 final popularDealStateNotifierProvider =
+    StateNotifierProvider<DealStateNotifier, DealState>(
+  (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
+);
+
+final dealByStoreProvider1 =
+    StateNotifierProvider<DealStateNotifier, DealState>(
+  (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
+);
+final dealByStoreProvider2 =
+    StateNotifierProvider<DealStateNotifier, DealState>(
+  (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
+);
+final dealByStoreProvider3 =
+    StateNotifierProvider<DealStateNotifier, DealState>(
+  (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
+);
+final dealByStoreProvider4 =
     StateNotifierProvider<DealStateNotifier, DealState>(
   (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),
 );

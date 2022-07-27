@@ -28,8 +28,17 @@ class DealFilter with _$DealFilter {
   factory DealFilter.freeGameFilter() =>
       DealFilter(pageNumber: 0, pageSize: 10, lowerPrice: 0, upperPrice: 0);
 
-  factory DealFilter.popularGameFilter() =>
-      DealFilter(pageNumber: 0, pageSize: 10, steamRating: 85, lowerPrice: 15);
+  factory DealFilter.popularGameFilter() => DealFilter(
+        pageNumber: 0,
+        pageSize: 10,
+        steamRating: 85,
+        lowerPrice: 15,
+      );
+  factory DealFilter.dealByStore(String storeId) => DealFilter(
+        pageNumber: 0,
+        pageSize: 10,
+        storeID: storeId,
+      );
 
   factory DealFilter.mostRecentFilter() =>
       DealFilter(pageNumber: 0, pageSize: 10, sortBy: 'recent');

@@ -38,6 +38,5 @@ final activeStoreProvider = Provider<List<DealStore>>(
   },
 );
 final storeById = Provider.family<DealStore?, String>(
-  (ref, storeId) =>
-      ref.watch(dealStoreStateNotifier.notifier).getStore(storeId),
+  (ref, storeId) => ref.read(dealStoreStateNotifier.notifier).getStore(storeId),
 );

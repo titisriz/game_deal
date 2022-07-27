@@ -57,6 +57,12 @@ class DealStateNotifier extends StateNotifier<DealState> {
     await getFilteredDeal(filter);
   }
 
+  Future<void> getDealByStore(String storeId) async {
+    resetState();
+    final filter = DealFilter.dealByStore(storeId);
+    await getFilteredDeal(filter);
+  }
+
   void resetState() {
     state = DealState.initial(Page.empty());
   }

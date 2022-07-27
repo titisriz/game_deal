@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_deal/deals/deal_main/presentation/deal_by_store_section.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_section.dart';
 
 import 'package:game_deal/deals/deal_main/shared/providers.dart';
@@ -14,10 +15,6 @@ class _DealMainPageState extends State<DealMainPage> {
   @override
   Widget build(BuildContext context) {
     final sections = [
-      const AspectRatio(
-        aspectRatio: 2 / 1,
-        child: Placeholder(),
-      ),
       HorizontalGameSection(
         title: "Free Games",
         getData: (ref) =>
@@ -42,52 +39,22 @@ class _DealMainPageState extends State<DealMainPage> {
         'Top Deals by Store',
         style: Theme.of(context).textTheme.headline6,
       ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
+      const DealByStoreSection(),
     ];
 
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListView.builder(
-        itemCount: sections.length,
-        itemBuilder: (context, index) {
-          return sections[index];
-        },
-      )),
+            itemCount: sections.length,
+            itemBuilder: (context, index) {
+              return sections[index];
+            },
+          ),
+        ),
+      ),
     );
   }
 }

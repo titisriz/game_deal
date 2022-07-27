@@ -11,14 +11,15 @@ final initializationProvider = FutureProvider((ref) async {
 });
 
 class App extends ConsumerWidget {
-  App({Key? key}) : super(key: key);
+  App({Key? key, this.theme}) : super(key: key);
+  final ThemeData? theme;
   final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializationProvider, (previous, next) {});
     return MaterialApp.router(
-      theme: lightTheme(context),
+      darkTheme: lightTheme(context),
       debugShowCheckedModeBanner: false,
       title: 'tes',
       routerDelegate: _appRouter.delegate(),

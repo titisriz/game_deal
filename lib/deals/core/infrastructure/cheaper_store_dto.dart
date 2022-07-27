@@ -28,4 +28,11 @@ class CheaperStoreDto with _$CheaperStoreDto {
         salePrice: salePrice,
         retailPrice: retailPrice,
       );
+
+  String get dealPercentage {
+    final retail = double.parse(retailPrice);
+    final discount = retail - double.parse(salePrice);
+
+    return '-${(discount / retail * 100).toStringAsFixed(0)}%';
+  }
 }

@@ -18,7 +18,6 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -43,27 +42,6 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(dealStateNotifierProvider);
-    /*
-    ref.listen<DealState>(dealStateNotifierProvider, (previous, next) {
-      next.map(
-        initial: (_) {
-          _canLoadNextPage = false;
-        },
-        loadInProgress: (_) {
-          _canLoadNextPage = false;
-        },
-        loadSuccess: (_) {
-          _canLoadNextPage = _.dealResults.isNextPageAvailable;
-        },
-        loadFailure: (_) {
-          _canLoadNextPage = false;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failure')),
-          );
-        },
-      );
-    });
-*/
     final safeArea = SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2),
@@ -120,10 +98,12 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
             );
           },
           icon: const Icon(Icons.filter_alt_sharp),
-          splashRadius: 20,
         ),
       ],
     );
-    return Scaffold(appBar: appBar2, body: safeArea);
+    return Scaffold(
+      appBar: appBar2,
+      body: safeArea,
+    );
   }
 }

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk : ">=2.16.2 < 3.0.0"
+  sdk : ">=2.16.2 < 3.0.5"
   # sdk: ">=2.7.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -48,6 +48,7 @@ dependencies:
   url_launcher: ^6.1.4
   cached_network_image: ^3.2.1
   material_design_icons_flutter: ^5.0.6996
+  json_theme: ^4.0.0+7
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,8 @@ flutter:
   assets:
     - images/capsule_sm_120.jpeg
     - images/tes-large.jpg
+    - assets/dark-theme.json
+    - assets/light-theme.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

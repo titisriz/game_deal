@@ -7,7 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
   static const List<Widget> pages = [
-    DealMainPage(key: PageStorageKey<String>('mainPage')),
+    DealMainPage(),
     DealBrowserPage(),
     WishListPage(),
   ];
@@ -25,14 +25,8 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: SizedBox(
         height: 60,
         child: BottomNavigationBar(
-          iconSize: 20,
           enableFeedback: true,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.shifting,
           selectedIconTheme: const IconThemeData(size: 30),
-          selectedItemColor: Colors.grey.shade900,
-          unselectedItemColor: Colors.grey.shade500,
           items: const [
             BottomNavigationBarItem(icon: Icon(MdiIcons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(MdiIcons.web), label: 'Browse'),

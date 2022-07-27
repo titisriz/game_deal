@@ -54,7 +54,7 @@ class HorizontalGameCard extends StatelessWidget {
                       child: Consumer(
                         builder: (context, ref, child) {
                           final store = ref
-                              .watch(dealStoreStateNotifier.notifier)
+                              .read(dealStoreStateNotifier.notifier)
                               .getStore(dealResult.storeID);
                           if (store != null) {
                             return ImageDisplay(

@@ -129,50 +129,30 @@ class DealGridTile extends StatelessWidget {
             ),
           ),
           // const Divider(),
-          store == null
-              ? Container()
-              : InkWell(
-                  onTap: () {
-                    launchUrl(
-                        Uri.parse(
-                            'https://www.cheapshark.com/redirect?dealID=${dealResult.dealID}'),
-                        mode: LaunchMode.inAppWebView,
-                        webViewConfiguration: const WebViewConfiguration(
-                          enableJavaScript: true,
-                        ));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.blue,
-                    height: 40,
-                    padding: const EdgeInsets.only(
-                        left: 5, right: 5, bottom: 5, top: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Expanded(
-                          flex: 5,
-                          child: Text(
-                            'Get offer',
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Icon(
-                            Icons.navigate_next,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
+          if (store != null)
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+              onPressed: () {
+                launchUrl(
+                    Uri.parse(
+                        'https://www.cheapshark.com/redirect?dealID=${dealResult.dealID}'),
+                    mode: LaunchMode.inAppWebView,
+                    webViewConfiguration: const WebViewConfiguration(
+                      enableJavaScript: true,
+                    ));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: const [
+                  Text('Get Offer'),
+                  Icon(
+                    Icons.navigate_next,
                   ),
-                ),
+                ],
+              ),
+            )
         ],
       ),
     );

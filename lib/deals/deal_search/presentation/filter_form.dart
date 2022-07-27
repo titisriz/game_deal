@@ -18,9 +18,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
     super.initState();
     Future.microtask(() {
       final filter = ref.watch(filterStateNotifierProvider);
-      final filterFormStateNotifier =
-          ref.watch(filterFormStateNotifierProvider.notifier);
-      filterFormStateNotifier.convertStateFromDomain(filter);
+      ref
+          .read(filterFormStateNotifierProvider.notifier)
+          .convertStateFromDomain(filter);
     });
   }
 

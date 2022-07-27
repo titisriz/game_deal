@@ -29,7 +29,6 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.dealResult.dealID);
     final detail = ref.watch(dealDetailStateNotifier);
     final stores = ref.watch(storeById(widget.dealResult.storeID));
     final imageUrl = stores?.images.logoUrl ?? '';
@@ -61,27 +60,31 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
             ),
             const Text('Current Deal'),
             DealListTile(
-                imageUrl: imageUrl,
-                title: title,
-                savings: savings,
-                normalPrice: normalPrice,
-                dealPrice: dealPrice),
-            const Text('Other Stores'),
+              imageUrl: imageUrl,
+              title: title,
+              savings: savings,
+              normalPrice: normalPrice,
+              dealPrice: dealPrice,
+            ),
             ...detail.when(
               initial: () => [],
               loadInProgress: () => [],
               loadSuccess: (dealDetail) {
-                return dealDetail!.cheaperStores.map(
-                  (e) {
-                    final store = ref.watch(storeById(e.storeID));
-                    return DealListTile(
-                        imageUrl: store?.images.iconUrl ?? '',
-                        title: store?.storeName ?? '',
-                        savings: '',
-                        normalPrice: e.retailPrice,
-                        dealPrice: e.salePrice);
-                  },
-                ).toList();
+                return [
+                  if (dealDetail!.cheaperStores.isNotEmpty)
+                    const Text('Cheaper Stores'),
+                  ...dealDetail.cheaperStores.map(
+                    (e) {
+                      final store = ref.watch(storeById(e.storeID));
+                      return DealListTile(
+                          imageUrl: store?.images.logoUrl ?? '',
+                          title: store?.storeName ?? '',
+                          savings: e.dealPercentage,
+                          normalPrice: e.retailPrice,
+                          dealPrice: e.salePrice);
+                    },
+                  ).toList(),
+                ];
               },
               loadFailure: (_) => [],
             )
