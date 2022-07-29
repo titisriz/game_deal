@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:game_deal/deals/core/presentation/price_horizontal_section.dart';
 
 class DealListTile extends StatelessWidget {
   const DealListTile({
@@ -33,42 +34,8 @@ class DealListTile extends StatelessWidget {
             style: const TextStyle(fontSize: 16),
           ),
         ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(3),
-              color: Colors.green.shade600,
-              child: Text(
-                savings,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.lightGreen.shade100,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text(
-              normalPrice,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.lineThrough,
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text(
-              dealPrice,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        subtitle: PriceHorizontalSection(
+            savings: savings, normalPrice: normalPrice, dealPrice: dealPrice),
         trailing: const Icon(Icons.navigate_next),
       ),
     );

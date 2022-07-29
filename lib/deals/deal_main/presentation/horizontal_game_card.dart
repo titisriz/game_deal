@@ -5,6 +5,7 @@ import 'package:game_deal/core/presentation/router/app_router.gr.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
 import 'package:game_deal/core/presentation/image_display.dart';
+import 'package:game_deal/deals/core/presentation/price_horizontal_section.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -87,25 +88,17 @@ class HorizontalGameCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
               ),
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(dealResult.dealSavings),
-                  Text(
-                    dealResult.dealNormalPrice,
-                    style:
-                        const TextStyle(decoration: TextDecoration.lineThrough),
-                  ),
-                  Text(dealResult.dealSalePrice)
-                ],
-              ),
+              PriceHorizontalSection(
+                  savings: dealResult.dealSavings,
+                  normalPrice: dealResult.dealNormalPrice,
+                  dealPrice: dealResult.dealSalePrice),
               const SizedBox(
                 height: 5,
               )
