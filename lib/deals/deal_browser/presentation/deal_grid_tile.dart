@@ -128,8 +128,8 @@ class DealGridTile extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-              onPressed: () {
-                launchUrl(
+              onPressed: () async {
+                await launchUrl(
                     Uri.parse(
                         'https://www.cheapshark.com/redirect?dealID=${dealResult.dealID}'),
                     mode: LaunchMode.inAppWebView,
