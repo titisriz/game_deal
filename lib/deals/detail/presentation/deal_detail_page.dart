@@ -8,11 +8,13 @@ import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 import 'package:game_deal/deals/core/shared/providers.dart';
 
 class DealDetailPage extends ConsumerStatefulWidget {
-  const DealDetailPage({
+  const DealDetailPage(
+    this.imageTag, {
     Key? key,
     required this.dealResult,
   }) : super(key: key);
   final DealResult dealResult;
+  final String imageTag;
 
   @override
   ConsumerState<DealDetailPage> createState() => _DealDetailPageState();
@@ -36,14 +38,14 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
     final savings = widget.dealResult.dealSavings;
     final normalPrice = widget.dealResult.normalPrice;
     final dealPrice = widget.dealResult.dealSalePrice;
-
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: widget.dealResult.dealID,
+              tag: widget.imageTag,
               child: ImageDisplay(
                 url: widget.dealResult.headerImgUrl,
                 errorWidget: ImagePlaceholder(
@@ -53,12 +55,23 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                 ratio: 2 / 1,
               ),
             ),
-            Text(
-              widget.dealResult.title,
-              style: Theme.of(context).textTheme.headline6,
-              maxLines: 2,
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                widget.dealResult.title,
+                style: Theme.of(context).textTheme.headline6,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
             ),
-            const Text('Current Deal'),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Current Deal',
+              style:
+                  Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15),
+            ),
             DealListTile(
               imageUrl: imageUrl,
               title: title,

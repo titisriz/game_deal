@@ -35,21 +35,16 @@ class DealGridTile extends StatelessWidget {
               topRight: Radius.circular(5),
             ),
             child: ImageDisplay(
-              url: dealResult.libraryImgUrl,
+              url: dealResult.headerImgUrl,
               fit: BoxFit.fitWidth,
-              ratio: libraryAspectRatio,
+              ratio: headerRatio,
               errorWidget: ImageDisplay(
-                url: dealResult.headerImgUrl,
+                url: dealResult.thumb,
                 fit: BoxFit.fitWidth,
-                ratio: libraryAspectRatio,
-                errorWidget: ImageDisplay(
-                  url: dealResult.thumb,
-                  fit: BoxFit.fitWidth,
-                  ratio: libraryAspectRatio,
-                  errorWidget: const Icon(
-                    MdiIcons.googleControllerOff,
-                    size: 50,
-                  ),
+                ratio: headerRatio,
+                errorWidget: const Icon(
+                  MdiIcons.googleControllerOff,
+                  size: 50,
                 ),
               ),
             ),

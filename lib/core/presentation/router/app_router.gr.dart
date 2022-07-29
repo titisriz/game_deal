@@ -31,8 +31,8 @@ class AppRouter extends _i3.RootStackRouter {
       final args = routeData.argsAs<DealDetailRouteArgs>();
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData,
-          child:
-              _i2.DealDetailPage(key: args.key, dealResult: args.dealResult));
+          child: _i2.DealDetailPage(args.imageTag,
+              key: args.key, dealResult: args.dealResult));
     }
   };
 
@@ -56,16 +56,23 @@ class MainRoute extends _i3.PageRouteInfo<void> {
 /// generated route for
 /// [_i2.DealDetailPage]
 class DealDetailRoute extends _i3.PageRouteInfo<DealDetailRouteArgs> {
-  DealDetailRoute({_i4.Key? key, required _i5.DealResult dealResult})
+  DealDetailRoute(
+      {required String imageTag,
+      _i4.Key? key,
+      required _i5.DealResult dealResult})
       : super(DealDetailRoute.name,
             path: '/detal',
-            args: DealDetailRouteArgs(key: key, dealResult: dealResult));
+            args: DealDetailRouteArgs(
+                imageTag: imageTag, key: key, dealResult: dealResult));
 
   static const String name = 'DealDetailRoute';
 }
 
 class DealDetailRouteArgs {
-  const DealDetailRouteArgs({this.key, required this.dealResult});
+  const DealDetailRouteArgs(
+      {required this.imageTag, this.key, required this.dealResult});
+
+  final String imageTag;
 
   final _i4.Key? key;
 
@@ -73,6 +80,6 @@ class DealDetailRouteArgs {
 
   @override
   String toString() {
-    return 'DealDetailRouteArgs{key: $key, dealResult: $dealResult}';
+    return 'DealDetailRouteArgs{imageTag: $imageTag, key: $key, dealResult: $dealResult}';
   }
 }

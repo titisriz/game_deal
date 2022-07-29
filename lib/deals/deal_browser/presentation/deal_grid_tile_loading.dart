@@ -21,7 +21,7 @@ class DealGridTileLoading extends StatelessWidget {
         ),
         child: Column(
           children: [
-            ImagePlaceholder(ratio: libraryAspectRatio),
+            ImagePlaceholder(ratio: headerRatio),
             const SizedBox(
               height: 10,
             ),

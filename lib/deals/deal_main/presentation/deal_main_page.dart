@@ -35,10 +35,6 @@ class _DealMainPageState extends State<DealMainPage> {
             .getMostRecentDeal(),
         stateNotifierProvider: recentDealStateNotifierProvider,
       ),
-      Text(
-        'Top Deals by Store',
-        style: Theme.of(context).textTheme.headline6,
-      ),
       const DealByStoreSection(),
     ];
 

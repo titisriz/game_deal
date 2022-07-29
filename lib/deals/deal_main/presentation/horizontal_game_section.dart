@@ -79,6 +79,7 @@ class Section extends StatelessWidget {
             children: state.dealResults.content
                 .map(
                   (e) => HorizontalGameCard(
+                    key: UniqueKey(),
                     dealResult: e,
                   ),
                 )

@@ -6,6 +6,7 @@ import 'package:game_deal/deal_store/shared/providers.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
 import 'package:game_deal/core/presentation/image_display.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class HorizontalGameCard extends StatelessWidget {
   const HorizontalGameCard({Key? key, required this.dealResult})
@@ -13,9 +14,11 @@ class HorizontalGameCard extends StatelessWidget {
   final DealResult dealResult;
   @override
   Widget build(BuildContext context) {
+    final imageTag = const Uuid().v1();
     return InkWell(
       onTap: () {
-        AutoRouter.of(context).push(DealDetailRoute(dealResult: dealResult));
+        AutoRouter.of(context)
+            .push(DealDetailRoute(imageTag: imageTag, dealResult: dealResult));
       },
       child: Card(
         child: SizedBox(
@@ -30,7 +33,7 @@ class HorizontalGameCard extends StatelessWidget {
                   alignment: Alignment.topRight,
                   children: [
                     Hero(
-                      tag: dealResult.dealID,
+                      tag: imageTag,
                       child: ImageDisplay(
                         url: dealResult.headerImgUrl,
                         ratio: 8 / 4,
