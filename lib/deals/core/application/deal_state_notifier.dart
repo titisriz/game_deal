@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:game_deal/core/domain/page.dart';
-import 'package:game_deal/deals/core/application/deal_filter.dart';
+import 'package:game_deal/deals/core/application/browser_filter_state.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
 import 'package:game_deal/deals/core/infrastructure/deal_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

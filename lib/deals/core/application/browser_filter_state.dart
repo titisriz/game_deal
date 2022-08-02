@@ -1,9 +1,10 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../core/infrastructure/pagination_config.dart';
-
-part 'deal_filter.g.dart';
-part 'deal_filter.freezed.dart';
+import 'package:game_deal/core/infrastructure/pagination_config.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+part 'browser_filter_state.g.dart';
+part 'browser_filter_state.freezed.dart';
 
 String? toStringJson(dynamic param) {
   return param?.toString();
@@ -28,6 +29,7 @@ class DealFilter with _$DealFilter {
     String? steamAppID,
     String? title, //textinput
     @JsonKey(toJson: toStringJson) int? steamworks, //0/1
+    @JsonKey(toJson: toStringJson) int? onSale,
   }) = _DealFilter;
 
   factory DealFilter.baseFilter() =>
@@ -53,4 +55,12 @@ class DealFilter with _$DealFilter {
 
   @override
   Map<String, dynamic> toJson() => _$DealFilterToJson(this);
+}
+
+class BrowserFilterStateNotifier extends StateNotifier<DealFilter> {
+  BrowserFilterStateNotifier() : super(DealFilter.baseFilter());
+
+  void setFilter(DealFilter filter) {
+    state = filter;
+  }
 }

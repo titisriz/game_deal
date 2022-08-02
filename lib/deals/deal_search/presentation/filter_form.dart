@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:game_deal/deals/deal_search/application/filter_form_state.dart';
+import 'package:game_deal/deals/deal_search/application/form_filter_state.dart';
 import 'package:game_deal/deals/core/shared/providers.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 
@@ -17,9 +17,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final filter = ref.watch(filterStateNotifierProvider);
+      final filter = ref.watch(browseFilterStateNotifierProvider);
       ref
-          .read(filterFormStateNotifierProvider.notifier)
+          .read(formFilterStateNotifierProvider.notifier)
           .convertStateFromDomain(filter);
     });
   }
@@ -27,8 +27,8 @@ class _FilterFormState extends ConsumerState<FilterForm> {
   @override
   Widget build(BuildContext context) {
     final filterFormStateNotifier =
-        ref.watch(filterFormStateNotifierProvider.notifier);
-    final filterFormState = ref.watch(filterFormStateNotifierProvider);
+        ref.watch(formFilterStateNotifierProvider.notifier);
+    final filterFormState = ref.watch(formFilterStateNotifierProvider);
     final dealState = ref.watch(dealStateNotifierProvider.notifier);
     final titleStyle =
         Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15);
@@ -100,74 +100,20 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                         'Price',
                         style: titleStyle,
                       ),
-                      RangeSlider(
-                        min: 0,
-                        max: 50,
-                        values: RangeValues(filterFormState.lowerPrice,
-                            filterFormState.upperPrice),
-                        divisions: 10,
-                        onChanged: (val) {
-                          filterFormStateNotifier.updateState(
-                            filterFormState.copyWith(
-                                upperPrice: val.end, lowerPrice: val.start),
-                          );
-                        },
-                        labels: RangeLabels(
-                          '\$${filterFormState.lowerPrice.toString()}',
-                          '\$${filterFormState.upperPriceDisplay}',
-                        ),
-                      ),
+                      PriceRangeSlider(
+                          filterFormState: filterFormState,
+                          filterFormStateNotifier: filterFormStateNotifier),
                       Text(
                         'Steam Rating',
                         style: titleStyle,
                       ),
-                      Slider(
-                        min: 0,
-                        max: 90,
-                        value: filterFormState.steamRating,
-                        divisions: 9,
-                        onChanged: (val) {
-                          filterFormStateNotifier.updateState(
-                            filterFormState.copyWith(
-                              steamRating: val,
-                            ),
-                          );
-                        },
-                        label: filterFormState.steamRating == 0
-                            ? 'Any'
-                            : '> ${filterFormState.steamRating.toStringAsFixed(0)}',
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                              child: Text(
-                            'Store',
-                            style: titleStyle,
-                          )),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                                tapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap),
-                            child: const Text('All'),
-                            onPressed: () {
-                              filterFormStateNotifier.selectMultipleStores(ref
-                                  .watch(activeStoreProvider)
-                                  .map((e) => e.storeID)
-                                  .toList());
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Clear'),
-                            onPressed: () {
-                              filterFormStateNotifier.removeAllSelectedStores();
-                            },
-                            style: TextButton.styleFrom(
-                                tapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap),
-                          )
-                        ],
-                      ),
+                      SteamRatingSlider(
+                          filterFormState: filterFormState,
+                          filterFormStateNotifier: filterFormStateNotifier),
+                      StoreSelectionTitle(
+                          titleStyle: titleStyle,
+                          filterFormStateNotifier: filterFormStateNotifier,
+                          ref: ref),
                       StoreSelection(
                           ref: ref,
                           filterFormState: filterFormState,
@@ -191,6 +137,25 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                           ),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'On Sale',
+                            style: titleStyle,
+                          ),
+                          Switch.adaptive(
+                            value: filterFormState.onSale,
+                            onChanged: ((value) {
+                              filterFormStateNotifier.updateState(
+                                filterFormState.copyWith(
+                                  onSale: value,
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -204,12 +169,14 @@ class _FilterFormState extends ConsumerState<FilterForm> {
               style: ElevatedButton.styleFrom(
                   shape: const BeveledRectangleBorder()),
               onPressed: () {
-                final filterStateNotifier =
-                    ref.watch(filterStateNotifierProvider.notifier);
-                filterStateNotifier.setFilter(toDomain(filterFormState));
+                final browseFilterStateNotifier =
+                    ref.watch(browseFilterStateNotifierProvider.notifier);
+                browseFilterStateNotifier
+                    .setFilter(toDealFilter(filterFormState));
 
                 dealState.resetState();
-                dealState.getFirstPageDeal(filter: toDomain(filterFormState));
+                dealState.getFirstPageDeal(
+                    filter: toDealFilter(filterFormState));
                 Navigator.of(context).pop();
               },
               child: const Text(
@@ -218,6 +185,112 @@ class _FilterFormState extends ConsumerState<FilterForm> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class StoreSelectionTitle extends StatelessWidget {
+  const StoreSelectionTitle({
+    Key? key,
+    required this.titleStyle,
+    required this.filterFormStateNotifier,
+    required this.ref,
+  }) : super(key: key);
+
+  final TextStyle? titleStyle;
+  final FormFilterStateNotifier filterFormStateNotifier;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+            child: Text(
+          'Store',
+          style: titleStyle,
+        )),
+        TextButton(
+          style: TextButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          child: const Text('All'),
+          onPressed: () {
+            filterFormStateNotifier.selectMultipleStores(
+                ref.watch(activeStoreProvider).map((e) => e.storeID).toList());
+          },
+        ),
+        TextButton(
+          child: const Text('Clear'),
+          onPressed: () {
+            filterFormStateNotifier.removeAllSelectedStores();
+          },
+          style: TextButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+        )
+      ],
+    );
+  }
+}
+
+class SteamRatingSlider extends StatelessWidget {
+  const SteamRatingSlider({
+    Key? key,
+    required this.filterFormState,
+    required this.filterFormStateNotifier,
+  }) : super(key: key);
+
+  final FormFilterState filterFormState;
+  final FormFilterStateNotifier filterFormStateNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slider(
+      min: 0,
+      max: 90,
+      value: filterFormState.steamRating,
+      divisions: 9,
+      onChanged: (val) {
+        filterFormStateNotifier.updateState(
+          filterFormState.copyWith(
+            steamRating: val,
+          ),
+        );
+      },
+      label: filterFormState.steamRating == 0
+          ? 'Any'
+          : '> ${filterFormState.steamRating.toStringAsFixed(0)}',
+    );
+  }
+}
+
+class PriceRangeSlider extends StatelessWidget {
+  const PriceRangeSlider({
+    Key? key,
+    required this.filterFormState,
+    required this.filterFormStateNotifier,
+  }) : super(key: key);
+
+  final FormFilterState filterFormState;
+  final FormFilterStateNotifier filterFormStateNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return RangeSlider(
+      min: 0,
+      max: 50,
+      values:
+          RangeValues(filterFormState.lowerPrice, filterFormState.upperPrice),
+      divisions: 10,
+      onChanged: (val) {
+        filterFormStateNotifier.updateState(
+          filterFormState.copyWith(upperPrice: val.end, lowerPrice: val.start),
+        );
+      },
+      labels: RangeLabels(
+        '\$${filterFormState.lowerPrice.toString()}',
+        '\$${filterFormState.upperPriceDisplay}',
       ),
     );
   }
@@ -232,8 +305,8 @@ class StoreSelection extends StatelessWidget {
   }) : super(key: key);
 
   final WidgetRef ref;
-  final FilterFormState filterFormState;
-  final FilterFormStateNotifier filterFormStateNotifier;
+  final FormFilterState filterFormState;
+  final FormFilterStateNotifier filterFormStateNotifier;
 
   @override
   Widget build(BuildContext context) {

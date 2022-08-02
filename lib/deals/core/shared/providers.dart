@@ -1,9 +1,8 @@
 import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/application/deal_detail_state_notifier.dart';
 import 'package:game_deal/deals/core/application/deal_state_notifier.dart';
-import 'package:game_deal/deals/deal_search/application/filter_form_state.dart';
-import 'package:game_deal/deals/core/application/filter_state.dart';
-import 'package:game_deal/deals/core/application/deal_filter.dart';
+import 'package:game_deal/deals/deal_search/application/form_filter_state.dart';
+import 'package:game_deal/deals/core/application/browser_filter_state.dart';
 import 'package:game_deal/deals/core/infrastructure/deal_remote_repository.dart';
 import 'package:game_deal/deals/core/infrastructure/deal_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,17 +26,17 @@ final dealStateNotifierProvider =
   ),
 );
 
-final filterStateNotifierProvider =
-    StateNotifierProvider<FilterStateNotifier, DealFilter>(
+final browseFilterStateNotifierProvider =
+    StateNotifierProvider<BrowserFilterStateNotifier, DealFilter>(
   (ref) {
-    return FilterStateNotifier();
+    return BrowserFilterStateNotifier();
   },
 );
 
-final filterFormStateNotifierProvider =
-    StateNotifierProvider.autoDispose<FilterFormStateNotifier, FilterFormState>(
+final formFilterStateNotifierProvider =
+    StateNotifierProvider.autoDispose<FormFilterStateNotifier, FormFilterState>(
   (ref) {
-    return FilterFormStateNotifier();
+    return FormFilterStateNotifier();
   },
 );
 

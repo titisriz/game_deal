@@ -17,11 +17,6 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
   bool _canLoadNextPage = false;
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     Future.microtask(
@@ -77,8 +72,6 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
       ),
     );
     final appBar2 = AppBar(
-      // backgroundColor: Theme.of(context).canvasColor,
-      // foregroundColor: Theme.of(context).primaryColorDark,
       elevation: 0,
       actions: [
         IconButton(

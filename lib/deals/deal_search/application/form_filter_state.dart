@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:game_deal/deals/core/application/deal_filter.dart';
+import 'package:game_deal/deals/core/application/browser_filter_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-part 'filter_form_state.freezed.dart';
+part 'form_filter_state.freezed.dart';
 
 @freezed
-class FilterFormState with _$FilterFormState {
-  const FilterFormState._();
-  factory FilterFormState({
+class FormFilterState with _$FormFilterState {
+  const FormFilterState._();
+  factory FormFilterState({
     required double upperPrice,
     required double lowerPrice,
     required double steamRating,
@@ -15,19 +15,22 @@ class FilterFormState with _$FilterFormState {
     String? title,
     required String selectedStoreId,
     required bool steamWorksSelected,
-  }) = _FilterFormState;
+    required bool onSale,
+  }) = _FormFilterState;
 
-  factory FilterFormState.initial() {
-    return FilterFormState(
-        upperPrice: 50,
-        lowerPrice: 0,
-        steamRating: 0,
-        steamWorksSelected: false,
-        selectedStoreId: "",
-        sortBy: sortByFromDomain('Deal Rating'));
+  factory FormFilterState.initial() {
+    return FormFilterState(
+      upperPrice: 50,
+      lowerPrice: 0,
+      steamRating: 0,
+      steamWorksSelected: false,
+      selectedStoreId: "",
+      sortBy: sortByFromDomain('Deal Rating'),
+      onSale: false,
+    );
   }
-  factory FilterFormState.fromDomain(DealFilter dealFilter) {
-    return FilterFormState(
+  factory FormFilterState.fromDealFilter(DealFilter dealFilter) {
+    return FormFilterState(
       upperPrice: dealFilter.upperPrice == null
           ? 50
           : dealFilter.upperPrice!.toDouble(),
@@ -39,6 +42,7 @@ class FilterFormState with _$FilterFormState {
       steamWorksSelected: (dealFilter.steamworks ?? 0) == 1 ? true : false,
       sortBy: sortByFromDomain(dealFilter.sortBy ?? 'Deal Rating'),
       selectedStoreId: dealFilter.storeID ?? '',
+      onSale: (dealFilter.onSale ?? 0) == 1 ? true : false,
     );
   }
   Set<String> get selectedStoreIdSet {
@@ -53,15 +57,15 @@ class FilterFormState with _$FilterFormState {
       50 == upperPrice ? "50.0+" : upperPrice.toString();
 }
 
-class FilterFormStateNotifier extends StateNotifier<FilterFormState> {
-  FilterFormStateNotifier() : super(FilterFormState.initial());
+class FormFilterStateNotifier extends StateNotifier<FormFilterState> {
+  FormFilterStateNotifier() : super(FormFilterState.initial());
 
   void convertStateFromDomain(DealFilter dealFilter) {
-    state = FilterFormState.fromDomain(dealFilter);
+    state = FormFilterState.fromDealFilter(dealFilter);
   }
 
-  void updateState(FilterFormState filterFormState) {
-    state = filterFormState;
+  void updateState(FormFilterState formFilterState) {
+    state = formFilterState;
   }
 
   void switchSelectStore(bool selected, String storeId) {
@@ -99,22 +103,23 @@ class FilterFormStateNotifier extends StateNotifier<FilterFormState> {
   }
 
   void resetFilter() {
-    state = FilterFormState.initial();
+    state = FormFilterState.initial();
   }
 }
 
-DealFilter toDomain(FilterFormState filterFormState) {
+DealFilter toDealFilter(FormFilterState formFilterState) {
   return DealFilter.baseFilter().copyWith(
-      upperPrice: filterFormState.upperPrice.toInt(),
-      lowerPrice: filterFormState.lowerPrice.toInt(),
-      steamRating: filterFormState.steamRating.toInt() == 0
+      upperPrice: formFilterState.upperPrice.toInt(),
+      lowerPrice: formFilterState.lowerPrice.toInt(),
+      steamRating: formFilterState.steamRating.toInt() == 0
           ? null
-          : filterFormState.steamRating.toInt(),
-      steamworks: filterFormState.steamWorksSelected ? 1 : 0,
-      sortBy: sortByToDomain(filterFormState.sortBy),
-      storeID: filterFormState.selectedStoreId.isEmpty
+          : formFilterState.steamRating.toInt(),
+      steamworks: formFilterState.steamWorksSelected ? 1 : 0,
+      sortBy: sortByToDomain(formFilterState.sortBy),
+      storeID: formFilterState.selectedStoreId.isEmpty
           ? null
-          : filterFormState.selectedStoreId);
+          : formFilterState.selectedStoreId,
+      onSale: formFilterState.onSale ? 1 : 0);
 }
 
 Map<String, String> get sortMap => {

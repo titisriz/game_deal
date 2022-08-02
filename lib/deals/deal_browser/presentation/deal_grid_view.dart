@@ -23,17 +23,19 @@ class DealGridView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dealFilterState = ref.watch(filterStateNotifierProvider);
-    final filterStateNotifier = ref.watch(filterStateNotifierProvider.notifier);
+    final browseFilterState = ref.watch(browseFilterStateNotifierProvider);
+    final browseFilterStateNotifier =
+        ref.watch(browseFilterStateNotifierProvider.notifier);
     bool _canLoadNextPage = canLoadNextPage;
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         final metrics = notification.metrics;
         final limit = metrics.maxScrollExtent - metrics.viewportDimension / 2;
         if (_canLoadNextPage && metrics.pixels >= limit) {
-          filterStateNotifier.setFilter(dealFilterState.copyWith(
-              pageNumber: dealFilterState.pageNumber + 1));
-          final newDealFilterState = ref.watch(filterStateNotifierProvider);
+          browseFilterStateNotifier.setFilter(browseFilterState.copyWith(
+              pageNumber: browseFilterState.pageNumber + 1));
+          final newDealFilterState =
+              ref.watch(browseFilterStateNotifierProvider);
           print('new dealFilterState ${newDealFilterState.pageNumber}');
           dealStateNotifier.getFilteredDeal(newDealFilterState);
           _canLoadNextPage = false;
