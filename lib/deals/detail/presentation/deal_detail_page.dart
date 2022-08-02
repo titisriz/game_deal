@@ -78,6 +78,7 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
               savings: savings,
               normalPrice: normalPrice,
               dealPrice: dealPrice,
+              dealID: widget.dealResult.dealID,
             ),
             ...detail.when(
               initial: () => [],
@@ -90,11 +91,13 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                     (e) {
                       final store = ref.watch(storeById(e.storeID));
                       return DealListTile(
-                          imageUrl: store?.images.logoUrl ?? '',
-                          title: store?.storeName ?? '',
-                          savings: e.dealPercentage,
-                          normalPrice: e.retailPrice,
-                          dealPrice: e.salePrice);
+                        imageUrl: store?.images.logoUrl ?? '',
+                        title: store?.storeName ?? '',
+                        savings: e.dealPercentage,
+                        normalPrice: e.retailPrice,
+                        dealPrice: e.salePrice,
+                        dealID: e.dealID,
+                      );
                     },
                   ).toList(),
                 ];

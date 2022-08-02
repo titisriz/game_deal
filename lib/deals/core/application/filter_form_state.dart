@@ -94,6 +94,10 @@ class FilterFormStateNotifier extends StateNotifier<FilterFormState> {
     );
   }
 
+  void selectMultipleStores(List<String> storeIds) {
+    state = state.copyWith(selectedStoreId: storeIds.join(','));
+  }
+
   void resetFilter() {
     state = FilterFormState.initial();
   }

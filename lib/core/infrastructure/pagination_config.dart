@@ -1,2 +1,2 @@
 const int dealPaginationSize = 60;
-const int dealPaginationSizeLoading = 4;
+const int dealPaginationSizeLoading = 10;

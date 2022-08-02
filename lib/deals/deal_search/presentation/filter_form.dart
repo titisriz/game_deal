@@ -142,9 +142,17 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Expanded(child: Text('Store')),
+                          TextButton(
+                            child: const Text('All'),
+                            onPressed: () {
+                              filterFormStateNotifier.selectMultipleStores(ref
+                                  .watch(activeStoreProvider)
+                                  .map((e) => e.storeID)
+                                  .toList());
+                            },
+                          ),
                           TextButton(
                             child: const Text('Clear'),
                             onPressed: () {
@@ -153,46 +161,10 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                           )
                         ],
                       ),
-                      Wrap(
-                        // crossAxisAlignment: WrapCrossAlignment.start,
-                        alignment: WrapAlignment.start,
-                        direction: Axis.horizontal,
-                        spacing: 0,
-                        // verticalDirection: VerticalDirection.down,
-                        children: [
-                          ...ref
-                              .watch(activeStoreProvider)
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: ChoiceChip(
-                                      key: Key(e.storeID),
-                                      label: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(e.storeName),
-                                          const SizedBox(
-                                            width: 2,
-                                          ),
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                                imageUrl: e.images.iconUrl),
-                                          ),
-                                        ],
-                                      ),
-                                      selected: filterFormState
-                                          .isStoreSelected(e.storeID),
-                                      onSelected: (value) {
-                                        filterFormStateNotifier
-                                            .switchSelectStore(
-                                                value, e.storeID);
-                                      },
-                                    ),
-                                  ))
-                              .toList()
-                        ],
-                      ),
+                      StoreSelection(
+                          ref: ref,
+                          filterFormState: filterFormState,
+                          filterFormStateNotifier: filterFormStateNotifier),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -240,6 +212,61 @@ class _FilterFormState extends ConsumerState<FilterForm> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class StoreSelection extends StatelessWidget {
+  const StoreSelection({
+    Key? key,
+    required this.ref,
+    required this.filterFormState,
+    required this.filterFormStateNotifier,
+  }) : super(key: key);
+
+  final WidgetRef ref;
+  final FilterFormState filterFormState;
+  final FilterFormStateNotifier filterFormStateNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      // crossAxisAlignment: WrapCrossAlignment.start,
+      alignment: WrapAlignment.start,
+      direction: Axis.horizontal,
+      spacing: 0,
+      // verticalDirection: VerticalDirection.down,
+      children: [
+        ...ref
+            .watch(activeStoreProvider)
+            .map((e) => Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: ChoiceChip(
+                    key: Key(e.storeID),
+                    label: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(e.storeName),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: e.images.iconUrl,
+                          ),
+                        ),
+                      ],
+                    ),
+                    selected: filterFormState.isStoreSelected(e.storeID),
+                    onSelected: (value) {
+                      filterFormStateNotifier.switchSelectStore(
+                          value, e.storeID);
+                    },
+                  ),
+                ))
+            .toList()
+      ],
     );
   }
 }

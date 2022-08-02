@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game_deal/core/presentation/router/app_router.gr.dart';
@@ -61,11 +62,12 @@ class HorizontalGameCard extends StatelessWidget {
                               .read(dealStoreStateNotifier.notifier)
                               .getStore(dealResult.storeID);
                           if (store != null) {
-                            return ImageDisplay(
-                                url: store.images.logoUrl,
-                                errorWidget: Container(),
-                                fit: BoxFit.fill,
-                                ratio: 1 / 1);
+                            return CachedNetworkImage(
+                              imageUrl: store.images.logoUrl,
+                              cacheKey: store.images.logoUrl,
+                              memCacheHeight: 52,
+                              memCacheWidth: 52,
+                            );
                           }
                           return Container();
                           // stores.

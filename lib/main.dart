@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +12,19 @@ void main() async {
   final themeStr = await rootBundle.loadString('assets/dark-theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+  HttpOverrides.global = MyHttpOverrides();
+
   runApp(ProviderScope(child: App()));
 }
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 // class MyApp extends StatelessWidget {
 //   const MyApp({Key? key}) : super(key: key);
 
