@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:game_deal/deals/core/application/filter_form_state.dart';
+import 'package:game_deal/deals/deal_search/application/filter_form_state.dart';
 import 'package:game_deal/deals/core/shared/providers.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 

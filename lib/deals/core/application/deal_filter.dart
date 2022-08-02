@@ -1,25 +1,33 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:game_deal/core/infrastructure/pagination_config.dart';
 
+import '../../../core/infrastructure/pagination_config.dart';
+
+part 'deal_filter.g.dart';
 part 'deal_filter.freezed.dart';
 
+String? toStringJson(dynamic param) {
+  return param?.toString();
+}
+
 @freezed
+@JsonSerializable(includeIfNull: false)
 class DealFilter with _$DealFilter {
   const DealFilter._();
   factory DealFilter({
     String? storeID, // radio / dropdown
-    required int pageNumber,
-    required int pageSize, //max 60
+    @JsonKey(toJson: toStringJson) required int pageNumber,
+    @JsonKey(toJson: toStringJson) required int pageSize, //max 60
     String?
         sortBy, //radio / dropdown //Deal Rating + Title + Savings + Price + Metacritic + Reviews + Release + Store + recent
-    int? desc, //0/1
-    int? lowerPrice, //textinput //range similar with toped?
-    int? upperPrice, //textinput
-    int? metacritic,
-    int? steamRating, //slider
+    @JsonKey(toJson: toStringJson) int? desc, //0/1
+    @JsonKey(toJson: toStringJson)
+        int? lowerPrice, //textinput //range similar with toped?
+    @JsonKey(toJson: toStringJson) int? upperPrice, //textinput
+    @JsonKey(toJson: toStringJson) int? metacritic,
+    @JsonKey(toJson: toStringJson) int? steamRating, //slider
     String? steamAppID,
     String? title, //textinput
-    int? steamworks, //0/1
+    @JsonKey(toJson: toStringJson) int? steamworks, //0/1
   }) = _DealFilter;
 
   factory DealFilter.baseFilter() =>
@@ -42,4 +50,7 @@ class DealFilter with _$DealFilter {
 
   factory DealFilter.mostRecentFilter() =>
       DealFilter(pageNumber: 0, pageSize: 10, sortBy: 'recent');
+
+  @override
+  Map<String, dynamic> toJson() => _$DealFilterToJson(this);
 }

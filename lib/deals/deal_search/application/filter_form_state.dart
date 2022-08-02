@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:game_deal/deals/core/domain/deal_filter.dart';
+import 'package:game_deal/deals/core/application/deal_filter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'filter_form_state.freezed.dart';
