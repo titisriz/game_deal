@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_deal/core/presentation/image_ratio_config.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 
 import 'package:game_deal/deal_store/domain/deal_store.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
@@ -38,10 +38,14 @@ class DealGridTile extends StatelessWidget {
               url: dealResult.headerImgUrl,
               fit: BoxFit.fitWidth,
               ratio: headerRatio,
+              height: tileHeight,
+              width: tileWidth,
               errorWidget: ImageDisplay(
                 url: dealResult.thumb,
                 fit: BoxFit.fitWidth,
                 ratio: headerRatio,
+                height: tileHeight,
+                width: tileWidth,
                 errorWidget: const Icon(
                   MdiIcons.googleControllerOff,
                   size: 50,
@@ -59,14 +63,14 @@ class DealGridTile extends StatelessWidget {
               children: [
                 Text(
                   dealResult.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 15),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      ?.copyWith(fontSize: 15),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

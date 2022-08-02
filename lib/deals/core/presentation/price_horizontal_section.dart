@@ -20,7 +20,9 @@ class PriceHorizontalSection extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(3),
-          color: Colors.green.shade600,
+          decoration: BoxDecoration(
+              color: Colors.green.shade600,
+              borderRadius: BorderRadius.circular(5)),
           child: Text(
             savings,
             style: TextStyle(

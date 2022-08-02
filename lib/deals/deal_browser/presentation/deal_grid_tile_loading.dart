@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_deal/core/presentation/image_ratio_config.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 
 import 'package:shimmer/shimmer.dart';

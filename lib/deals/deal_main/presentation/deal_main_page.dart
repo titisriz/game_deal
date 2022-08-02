@@ -41,14 +41,11 @@ class _DealMainPageState extends State<DealMainPage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: ListView.builder(
-            itemCount: sections.length,
-            itemBuilder: (context, index) {
-              return sections[index];
-            },
-          ),
+        child: ListView.builder(
+          itemCount: sections.length,
+          itemBuilder: (context, index) {
+            return sections[index];
+          },
         ),
       ),
     );

@@ -69,9 +69,18 @@ class Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headline6,
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        const SizedBox(
+          height: 5,
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,

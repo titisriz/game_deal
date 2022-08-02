@@ -48,61 +48,90 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
               tag: widget.imageTag,
               child: ImageDisplay(
                 url: widget.dealResult.headerImgUrl,
-                errorWidget: ImagePlaceholder(
+                errorWidget: ImageDisplay(
+                  url: widget.dealResult.thumb,
+                  errorWidget: ImagePlaceholder(
+                    ratio: 2 / 1,
+                  ),
+                  fit: BoxFit.fill,
                   ratio: 2 / 1,
                 ),
                 fit: BoxFit.fill,
                 ratio: 2 / 1,
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                widget.dealResult.title,
-                style: Theme.of(context).textTheme.headline6,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
-            Text(
-              'Current Deal',
-              style:
-                  Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15),
-            ),
-            DealListTile(
-              imageUrl: imageUrl,
-              title: title,
-              savings: savings,
-              normalPrice: normalPrice,
-              dealPrice: dealPrice,
-              dealID: widget.dealResult.dealID,
-            ),
-            ...detail.when(
-              initial: () => [],
-              loadInProgress: () => [],
-              loadSuccess: (dealDetail) {
-                return [
-                  if (dealDetail!.cheaperStores.isNotEmpty)
-                    const Text('Cheaper Stores'),
-                  ...dealDetail.cheaperStores.map(
-                    (e) {
-                      final store = ref.watch(storeById(e.storeID));
-                      return DealListTile(
-                        imageUrl: store?.images.logoUrl ?? '',
-                        title: store?.storeName ?? '',
-                        savings: e.dealPercentage,
-                        normalPrice: e.retailPrice,
-                        dealPrice: e.salePrice,
-                        dealID: e.dealID,
-                      );
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.dealResult.title,
+                      style: Theme.of(context).textTheme.headline6,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Current Deal',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(fontSize: 15),
+                  ),
+                  DealListTile(
+                    imageUrl: imageUrl,
+                    title: title,
+                    savings: savings,
+                    normalPrice: normalPrice,
+                    dealPrice: dealPrice,
+                    dealID: widget.dealResult.dealID,
+                  ),
+                  ...detail.when(
+                    initial: () => [],
+                    loadInProgress: () => [],
+                    loadSuccess: (dealDetail) {
+                      return [
+                        if (dealDetail!.cheaperStores.isNotEmpty)
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        if (dealDetail.cheaperStores.isNotEmpty)
+                          Text(
+                            'Cheaper Stores',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(fontSize: 15),
+                          ),
+                        ...dealDetail.cheaperStores.map(
+                          (e) {
+                            final store = ref.watch(storeById(e.storeID));
+                            return DealListTile(
+                              imageUrl: store?.images.logoUrl ?? '',
+                              title: store?.storeName ?? '',
+                              savings: e.dealPercentage,
+                              normalPrice: e.retailPrice,
+                              dealPrice: e.salePrice,
+                              dealID: e.dealID,
+                            );
+                          },
+                        ).toList(),
+                      ];
                     },
-                  ).toList(),
-                ];
-              },
-              loadFailure: (_) => [],
+                    loadFailure: (_) => [],
+                  )
+                ],
+              ),
             )
           ],
         ),

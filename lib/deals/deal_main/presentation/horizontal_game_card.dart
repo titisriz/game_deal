@@ -44,7 +44,7 @@ class HorizontalGameCard extends StatelessWidget {
                         errorWidget: ImageDisplay(
                           url: dealResult.thumb,
                           ratio: 8 / 4,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           alignment: Alignment.topCenter,
                           errorWidget: const Icon(
                             MdiIcons.googleControllerOff,

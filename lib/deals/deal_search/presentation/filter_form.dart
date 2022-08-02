@@ -30,7 +30,8 @@ class _FilterFormState extends ConsumerState<FilterForm> {
         ref.watch(filterFormStateNotifierProvider.notifier);
     final filterFormState = ref.watch(filterFormStateNotifierProvider);
     final dealState = ref.watch(dealStateNotifierProvider.notifier);
-
+    final titleStyle =
+        Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15);
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.80,
       // padding: const EdgeInsets.all(10.0),
@@ -63,7 +64,7 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                         children: [
                           Text(
                             'Sort By',
-                            style: Theme.of(context).textTheme.headline6,
+                            style: titleStyle,
                           ),
                           TextButton(
                               onPressed: () =>
@@ -96,12 +97,8 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                         height: 5,
                       ),
                       Text(
-                        'Filter',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const Text(
                         'Price',
-                        style: TextStyle(fontSize: 15),
+                        style: titleStyle,
                       ),
                       RangeSlider(
                         min: 0,
@@ -120,9 +117,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                           '\$${filterFormState.upperPriceDisplay}',
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Steam Rating',
-                        style: TextStyle(fontSize: 15),
+                        style: titleStyle,
                       ),
                       Slider(
                         min: 0,
@@ -143,8 +140,15 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Expanded(child: Text('Store')),
+                          Expanded(
+                              child: Text(
+                            'Store',
+                            style: titleStyle,
+                          )),
                           TextButton(
+                            style: TextButton.styleFrom(
+                                tapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap),
                             child: const Text('All'),
                             onPressed: () {
                               filterFormStateNotifier.selectMultipleStores(ref
@@ -158,6 +162,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                             onPressed: () {
                               filterFormStateNotifier.removeAllSelectedStores();
                             },
+                            style: TextButton.styleFrom(
+                                tapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap),
                           )
                         ],
                       ),
@@ -168,9 +175,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Steam Works',
-                            style: TextStyle(fontSize: 15),
+                            style: titleStyle,
                           ),
                           Switch.adaptive(
                             value: filterFormState.steamWorksSelected,

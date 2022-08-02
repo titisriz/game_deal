@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_deal/core/presentation/image_ratio_config.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 
 class ImagePlaceholder extends StatelessWidget {
   ImagePlaceholder({

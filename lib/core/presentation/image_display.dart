@@ -11,6 +11,8 @@ class ImageDisplay extends StatelessWidget {
     this.fit = BoxFit.fitWidth,
     required this.ratio,
     this.alignment,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   final String url;
@@ -18,6 +20,8 @@ class ImageDisplay extends StatelessWidget {
   final BoxFit? fit;
   final double ratio;
   final Alignment? alignment;
+  final int? width;
+  final int? height;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,8 @@ class ImageDisplay extends StatelessWidget {
         fadeInDuration: const Duration(milliseconds: 500),
         imageUrl: url,
         cacheKey: url,
+        memCacheHeight: height,
+        memCacheWidth: width,
         filterQuality: FilterQuality.high,
         fit: fit,
         alignment: alignment ?? Alignment.center,

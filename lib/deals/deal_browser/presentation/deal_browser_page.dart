@@ -44,7 +44,7 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
     final state = ref.watch(dealStateNotifierProvider);
     final safeArea = SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: state.map(
           initial: (_) {
             _canLoadNextPage = false;
