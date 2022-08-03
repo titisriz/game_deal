@@ -9,7 +9,6 @@ final freeGamesStateNotifierProvider =
   },
 );
 
-//TODO : recent deals provider
 final recentDealStateNotifierProvider =
     StateNotifierProvider<DealStateNotifier, DealState>(
   (ref) => DealStateNotifier(ref.watch(dealRepositoryProvider)),

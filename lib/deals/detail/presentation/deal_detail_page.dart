@@ -26,7 +26,7 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
     super.initState();
     Future.microtask(() => ref
         .read(dealDetailStateNotifier.notifier)
-        .getData(widget.dealResult.dealID));
+        .getData(widget.dealResult.gameID, widget.dealResult.storeID));
   }
 
   @override
@@ -99,29 +99,42 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                   ...detail.when(
                     initial: () => [],
                     loadInProgress: () => [],
-                    loadSuccess: (dealDetail) {
+                    loadSuccess: (gameInfo) {
                       return [
-                        if (dealDetail!.cheaperStores.isNotEmpty)
+                        if (gameInfo!.deals.isNotEmpty)
                           const SizedBox(
                             height: 5,
                           ),
-                        if (dealDetail.cheaperStores.isNotEmpty)
+                        if (gameInfo.deals.isNotEmpty &&
+                            gameInfo.deals.length > 1)
                           Text(
-                            'Cheaper Stores',
+                            'Price in Other Stores',
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
                                 ?.copyWith(fontSize: 15),
                           ),
-                        ...dealDetail.cheaperStores.map(
+                        if (gameInfo.deals.isNotEmpty &&
+                            gameInfo.deals.length == 1)
+                          Text(
+                            'Price in Other Store',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(fontSize: 15),
+                          ),
+                        ...gameInfo.deals.map(
                           (e) {
                             final store = ref.watch(storeById(e.storeID));
+                            if (e.storeID == widget.dealResult.storeID) {
+                              return Container();
+                            }
                             return DealListTile(
                               imageUrl: store?.images.logoUrl ?? '',
                               title: store?.storeName ?? '',
                               savings: e.dealPercentage,
                               normalPrice: e.retailPrice,
-                              dealPrice: e.salePrice,
+                              dealPrice: e.price,
                               dealID: e.dealID,
                             );
                           },

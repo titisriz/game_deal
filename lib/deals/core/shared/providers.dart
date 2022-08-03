@@ -1,6 +1,8 @@
 import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/application/deal_detail_state_notifier.dart';
 import 'package:game_deal/deals/core/application/deal_state_notifier.dart';
+import 'package:game_deal/deals/core/infrastructure/game_info_remote_repository.dart';
+import 'package:game_deal/deals/core/infrastructure/game_info_repository.dart';
 import 'package:game_deal/deals/deal_search/application/form_filter_state.dart';
 import 'package:game_deal/deals/core/application/browser_filter_state.dart';
 import 'package:game_deal/deals/core/infrastructure/deal_remote_repository.dart';
@@ -40,7 +42,13 @@ final formFilterStateNotifierProvider =
   },
 );
 
+final gameInfoRemoteRepositoryProvider =
+    Provider((ref) => GameInfoRemoteRepository(ref.watch(dioProvider)));
+
+final gameInfoRepositoryProvider = Provider(
+    (ref) => GameInfoRepository(ref.watch(gameInfoRemoteRepositoryProvider)));
+
 final dealDetailStateNotifier =
     StateNotifierProvider.autoDispose<DealDetailStateNotifier, DealDetailState>(
-  (ref) => DealDetailStateNotifier(ref.watch(dealRepositoryProvider)),
+  (ref) => DealDetailStateNotifier(ref.watch(gameInfoRepositoryProvider)),
 );

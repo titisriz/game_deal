@@ -127,7 +127,6 @@ class DealGridTile extends StatelessWidget {
               ],
             ),
           ),
-          // const Divider(),
           if (store != null)
             ElevatedButton(
               style: ElevatedButton.styleFrom(
