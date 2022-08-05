@@ -77,6 +77,7 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
         IconButton(
           onPressed: () {
             showModalBottomSheet(
+              backgroundColor: Theme.of(context).cardTheme.color,
               // anchorPoint: const Offset(0, 10),
               isScrollControlled: true,
               enableDrag: true,

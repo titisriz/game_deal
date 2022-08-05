@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_deal/core/presentation/router/app_router.gr.dart';
+import 'package:game_deal/core/presentation/theme/dark.dart';
 import 'package:game_deal/core/presentation/theme/light.dart';
 import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
@@ -19,7 +20,9 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializationProvider, (previous, next) {});
     return MaterialApp.router(
-      darkTheme: lightTheme(context),
+      theme: lightTheme(context),
+      darkTheme: darkTheme(context),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       title: 'tes',
       routerDelegate: _appRouter.delegate(),

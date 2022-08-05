@@ -22,10 +22,6 @@ class DealGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey.shade100,
-      shadowColor: Colors.black,
-      borderOnForeground: true,
-      elevation: 3,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
