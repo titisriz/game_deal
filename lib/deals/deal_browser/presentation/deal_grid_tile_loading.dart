@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game_deal/core/presentation/image_size_config.dart';
+import 'package:game_deal/core/presentation/theme/dark.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 
 import 'package:shimmer/shimmer.dart';
@@ -12,11 +13,11 @@ class DealGridTileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade200,
-      highlightColor: Colors.grey.shade100,
+      baseColor: shimmerBaseColor,
+      highlightColor: shimmerHighlightColor,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade100),
+          border: Border.all(color: shimmerBaseColor),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         child: Column(

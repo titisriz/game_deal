@@ -62,11 +62,14 @@ class HorizontalGameCard extends StatelessWidget {
                               .read(dealStoreStateNotifier.notifier)
                               .getStore(dealResult.storeID);
                           if (store != null) {
-                            return CachedNetworkImage(
-                              imageUrl: store.images.logoUrl,
-                              cacheKey: store.images.logoUrl,
-                              memCacheHeight: 52,
-                              memCacheWidth: 52,
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: CachedNetworkImage(
+                                imageUrl: store.images.logoUrl,
+                                cacheKey: store.images.logoUrl,
+                                memCacheHeight: 52,
+                                memCacheWidth: 52,
+                              ),
                             );
                           }
                           return Container();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game_deal/core/presentation/theme/dark.dart';
 import 'package:game_deal/deals/core/application/deal_state_notifier.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_card.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_card_loading.dart';
@@ -109,12 +110,15 @@ class SectionLoading extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 8),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade200,
-        highlightColor: Colors.grey.shade100,
+        baseColor: shimmerBaseColor,
+        highlightColor: shimmerHighlightColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               width: 180,
               height: 20,

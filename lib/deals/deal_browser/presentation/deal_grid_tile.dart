@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:game_deal/core/presentation/image_size_config.dart';
 
@@ -85,12 +86,13 @@ class DealGridTile extends StatelessWidget {
                               iconData: Icons.comment,
                               size: 13),
                           if (store != null)
-                            Container(
-                              color: Colors.grey[350],
-                              child: SizedBox(
-                                width: 13,
-                                height: 13,
-                                child: Image.network(store!.images.iconUrl),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: CachedNetworkImage(
+                                imageUrl: store!.images.iconUrl,
+                                cacheKey: store!.images.iconUrl,
+                                memCacheHeight: 15,
+                                memCacheWidth: 15,
                               ),
                             )
                         ],

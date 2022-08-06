@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:game_deal/core/presentation/theme/dark.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -38,8 +39,8 @@ class ImageDisplay extends StatelessWidget {
         alignment: alignment ?? Alignment.center,
         progressIndicatorBuilder: (context, url, progress) {
           return Shimmer.fromColors(
-            baseColor: Colors.grey.shade200,
-            highlightColor: Colors.grey.shade100,
+            baseColor: shimmerBaseColor,
+            highlightColor: shimmerHighlightColor,
             child: ImagePlaceholder(ratio: ratio),
           );
         },

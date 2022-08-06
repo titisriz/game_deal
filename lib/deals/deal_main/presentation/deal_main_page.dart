@@ -22,7 +22,7 @@ class _DealMainPageState extends State<DealMainPage> {
         stateNotifierProvider: freeGamesStateNotifierProvider,
       ),
       HorizontalGameSection(
-        title: "Popular Game Deals",
+        title: "Popular Deals",
         getData: (ref) => ref
             .watch(popularDealStateNotifierProvider.notifier)
             .getPopularDeal(),
