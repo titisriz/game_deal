@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:game_deal/core/presentation/theme/dark.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ImageDisplay extends StatelessWidget {
+class ImageDisplay extends ConsumerWidget {
   const ImageDisplay({
     Key? key,
     required this.url,
@@ -25,7 +26,7 @@ class ImageDisplay extends StatelessWidget {
   final int? height;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AspectRatio(
       aspectRatio: ratio,
       child: CachedNetworkImage(
@@ -38,9 +39,10 @@ class ImageDisplay extends StatelessWidget {
         fit: fit,
         alignment: alignment ?? Alignment.center,
         progressIndicatorBuilder: (context, url, progress) {
+          final currentTheme = ref.watch(currentThemeProvider);
           return Shimmer.fromColors(
-            baseColor: shimmerBaseColor,
-            highlightColor: shimmerHighlightColor,
+            baseColor: currentTheme.shimmerBaseColor,
+            highlightColor: currentTheme.shimmerHighlightColor,
             child: ImagePlaceholder(ratio: ratio),
           );
         },

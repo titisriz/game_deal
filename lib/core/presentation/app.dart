@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:game_deal/core/presentation/router/app_router.gr.dart';
-import 'package:game_deal/core/presentation/theme/dark.dart';
-import 'package:game_deal/core/presentation/theme/light.dart';
 import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,10 +17,11 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(initializationProvider, (previous, next) {});
+
     return MaterialApp.router(
-      theme: lightTheme(context),
-      darkTheme: darkTheme(context),
-      themeMode: ThemeMode.dark,
+      theme: ref.watch(lightThemeProvider).theme,
+      darkTheme: ref.watch(darkThemeProvider).theme,
+      themeMode: ref.watch(themeModeProvider),
       debugShowCheckedModeBanner: false,
       title: 'tes',
       routerDelegate: _appRouter.delegate(),

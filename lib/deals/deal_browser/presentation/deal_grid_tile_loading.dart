@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game_deal/core/presentation/image_size_config.dart';
-import 'package:game_deal/core/presentation/theme/dark.dart';
+import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 
 import 'package:shimmer/shimmer.dart';
 
-class DealGridTileLoading extends StatelessWidget {
+class DealGridTileLoading extends ConsumerWidget {
   const DealGridTileLoading({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(currentThemeProvider);
     return Shimmer.fromColors(
-      baseColor: shimmerBaseColor,
-      highlightColor: shimmerHighlightColor,
+      baseColor: theme.shimmerBaseColor,
+      highlightColor: theme.shimmerHighlightColor,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: shimmerBaseColor),
+          border: Border.all(color: theme.shimmerBaseColor),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         child: Column(

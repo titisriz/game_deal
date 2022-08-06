@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:game_deal/core/presentation/theme/dark.dart';
+import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/application/deal_state_notifier.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_card.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_card_loading.dart';
@@ -101,17 +101,18 @@ class Section extends StatelessWidget {
   }
 }
 
-class SectionLoading extends StatelessWidget {
+class SectionLoading extends ConsumerWidget {
   const SectionLoading({
     Key? key,
   }) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(currentThemeProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 8),
       child: Shimmer.fromColors(
-        baseColor: shimmerBaseColor,
-        highlightColor: shimmerHighlightColor,
+        baseColor: theme.shimmerBaseColor,
+        highlightColor: theme.shimmerHighlightColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
