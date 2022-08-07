@@ -42,6 +42,7 @@ class DealStateNotifier extends StateNotifier<DealState> {
   Future<void> getFreeGames() async {
     resetState();
     final filter = DealFilter.freeGameFilter();
+    // state = DealState.loadSuccess(Page.empty());
     await getFilteredDeal(filter);
   }
 

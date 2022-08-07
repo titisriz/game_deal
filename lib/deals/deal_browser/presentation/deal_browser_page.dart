@@ -72,9 +72,10 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
       ),
     );
     final appBar2 = AppBar(
-      elevation: 0,
+      title: const Text('Browse Deal'),
       actions: [
         IconButton(
+          splashRadius: 20,
           onPressed: () {
             showModalBottomSheet(
               backgroundColor: Theme.of(context).cardTheme.color,
@@ -82,9 +83,11 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
               isScrollControlled: true,
               enableDrag: true,
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+              ),
               context: context,
               builder: (context) {
                 return const FilterForm();

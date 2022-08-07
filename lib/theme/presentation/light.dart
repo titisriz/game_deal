@@ -8,7 +8,7 @@ class LightTheme extends ApplicationTheme {
   final onPrimaryColor = const Color(0xff2A1700);
   final scaffoldBgColor = const Color.fromARGB(255, 236, 254, 253);
   final onScaffoldBgColor = Colors.white;
-  final cardColor = const Color.fromARGB(255, 234, 234, 234);
+  final cardColor = const Color.fromARGB(255, 90, 90, 90);
   final appBarColor = const Color.fromARGB(255, 6, 98, 92);
   final bottomNavBarColor = const Color.fromARGB(255, 6, 98, 92);
   final unselectedColor = const Color.fromARGB(255, 182, 182, 182);
@@ -40,6 +40,7 @@ class LightTheme extends ApplicationTheme {
         ),
         appBarTheme: AppBarTheme(
           color: appBarColor,
+          foregroundColor: Colors.white70,
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: bottomNavBarColor,

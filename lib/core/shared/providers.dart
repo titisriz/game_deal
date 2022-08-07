@@ -17,7 +17,7 @@ final darkThemeProvider = Provider<ApplicationTheme>(
 final lightThemeProvider = Provider<ApplicationTheme>(
   (ref) => LightTheme(),
 );
-final themeModeProvider = Provider<ThemeMode>((ref) => ThemeMode.light);
+final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.dark);
 
 final currentThemeProvider = Provider<ApplicationTheme>(
   (ref) {

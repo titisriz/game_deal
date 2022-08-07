@@ -27,28 +27,30 @@ class ImageDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AspectRatio(
-      aspectRatio: ratio,
-      child: CachedNetworkImage(
-        fadeInDuration: const Duration(milliseconds: 500),
-        imageUrl: url,
-        cacheKey: url,
-        memCacheHeight: height,
-        memCacheWidth: width,
-        filterQuality: FilterQuality.high,
-        fit: fit,
-        alignment: alignment ?? Alignment.center,
-        progressIndicatorBuilder: (context, url, progress) {
-          final currentTheme = ref.watch(currentThemeProvider);
-          return Shimmer.fromColors(
-            baseColor: currentTheme.shimmerBaseColor,
-            highlightColor: currentTheme.shimmerHighlightColor,
-            child: ImagePlaceholder(ratio: ratio),
-          );
-        },
-        errorWidget: (context, url, error) {
-          return errorWidget;
-        },
+    return RepaintBoundary(
+      child: AspectRatio(
+        aspectRatio: ratio,
+        child: CachedNetworkImage(
+          fadeInDuration: const Duration(milliseconds: 500),
+          imageUrl: url,
+          cacheKey: url,
+          memCacheHeight: height,
+          memCacheWidth: width,
+          filterQuality: FilterQuality.high,
+          fit: fit,
+          alignment: alignment ?? Alignment.center,
+          progressIndicatorBuilder: (context, url, progress) {
+            final currentTheme = ref.watch(currentThemeProvider);
+            return Shimmer.fromColors(
+              baseColor: currentTheme.shimmerBaseColor,
+              highlightColor: currentTheme.shimmerHighlightColor,
+              child: ImagePlaceholder(ratio: ratio),
+            );
+          },
+          errorWidget: (context, url, error) {
+            return errorWidget;
+          },
+        ),
       ),
     );
   }

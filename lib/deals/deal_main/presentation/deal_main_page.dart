@@ -39,7 +39,9 @@ class _DealMainPageState extends State<DealMainPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
       body: SafeArea(
         child: ListView.builder(
           itemCount: sections.length,

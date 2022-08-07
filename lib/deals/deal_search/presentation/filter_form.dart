@@ -29,7 +29,6 @@ class _FilterFormState extends ConsumerState<FilterForm> {
     final filterFormStateNotifier =
         ref.watch(formFilterStateNotifierProvider.notifier);
     final filterFormState = ref.watch(formFilterStateNotifierProvider);
-    final dealState = ref.watch(dealStateNotifierProvider.notifier);
     final titleStyle =
         Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15);
     return SizedBox(
@@ -50,9 +49,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
           ),
           const Divider(color: Colors.grey, height: 1),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SingleChildScrollView(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Form(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -162,29 +161,43 @@ class _FilterFormState extends ConsumerState<FilterForm> {
               ),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: const BeveledRectangleBorder()),
-              onPressed: () {
-                final browseFilterStateNotifier =
-                    ref.watch(browseFilterStateNotifierProvider.notifier);
-                browseFilterStateNotifier
-                    .setFilter(toDealFilter(filterFormState));
-
-                dealState.resetState();
-                dealState.getFirstPageDeal(
-                    filter: toDealFilter(filterFormState));
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Submit',
-              ),
-            ),
-          ),
+          SubmitButton(ref: ref, filterFormState: filterFormState),
         ],
+      ),
+    );
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  const SubmitButton({
+    Key? key,
+    required this.ref,
+    required this.filterFormState,
+  }) : super(key: key);
+
+  final WidgetRef ref;
+  final FormFilterState filterFormState;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: const BeveledRectangleBorder()),
+        onPressed: () {
+          final browseFilterStateNotifier =
+              ref.watch(browseFilterStateNotifierProvider.notifier);
+          browseFilterStateNotifier.setFilter(toDealFilter(filterFormState));
+
+          final dealState = ref.watch(dealStateNotifierProvider.notifier);
+          dealState.resetState();
+          dealState.getFirstPageDeal(filter: toDealFilter(filterFormState));
+          Navigator.of(context).pop();
+        },
+        child: const Text(
+          'Submit',
+        ),
       ),
     );
   }

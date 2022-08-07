@@ -34,21 +34,23 @@ class HorizontalGameCard extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Hero(
-                      tag: imageTag,
-                      child: ImageDisplay(
-                        url: dealResult.headerImgUrl,
-                        ratio: 8 / 4,
-                        fit: BoxFit.fill,
-                        alignment: Alignment.topCenter,
-                        errorWidget: ImageDisplay(
-                          url: dealResult.thumb,
+                    RepaintBoundary(
+                      child: Hero(
+                        tag: imageTag,
+                        child: ImageDisplay(
+                          url: dealResult.headerImgUrl,
                           ratio: 8 / 4,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           alignment: Alignment.topCenter,
-                          errorWidget: const Icon(
-                            MdiIcons.googleControllerOff,
-                            size: 50,
+                          errorWidget: ImageDisplay(
+                            url: dealResult.thumb,
+                            ratio: 8 / 4,
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                            errorWidget: const Icon(
+                              MdiIcons.googleControllerOff,
+                              size: 50,
+                            ),
                           ),
                         ),
                       ),

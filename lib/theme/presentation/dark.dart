@@ -35,9 +35,11 @@ class DarkTheme extends ApplicationTheme {
         cardTheme: CardTheme(
           color: cardColor,
           surfaceTintColor: Colors.white,
+          shadowColor: primaryColor,
         ),
         appBarTheme: AppBarTheme(
           color: appBarColor,
+          shadowColor: primaryColor,
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: bottomNavBarColor,

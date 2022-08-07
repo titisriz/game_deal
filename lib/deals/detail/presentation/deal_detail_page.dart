@@ -44,24 +44,27 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: widget.imageTag,
-              child: ImageDisplay(
-                url: widget.dealResult.headerImgUrl,
-                errorWidget: ImageDisplay(
-                  url: widget.dealResult.thumb,
-                  errorWidget: ImagePlaceholder(
+            ClipPath(
+              clipper: DetailCustomClipper(),
+              child: CustomPaint(
+                painter: DetailCustomPainter(),
+                child: Hero(
+                  tag: widget.imageTag,
+                  child: ImageDisplay(
+                    url: widget.dealResult.headerImgUrl,
+                    errorWidget: ImageDisplay(
+                      url: widget.dealResult.thumb,
+                      errorWidget: ImagePlaceholder(
+                        ratio: 2 / 1,
+                      ),
+                      fit: BoxFit.fill,
+                      ratio: 2 / 1,
+                    ),
+                    fit: BoxFit.fill,
                     ratio: 2 / 1,
                   ),
-                  fit: BoxFit.fill,
-                  ratio: 2 / 1,
                 ),
-                fit: BoxFit.fill,
-                ratio: 2 / 1,
               ),
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -150,5 +153,58 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
         ),
       ),
     );
+  }
+}
+
+class DetailCustomClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(0, size.height);
+    path.arcToPoint(
+      Offset(15, size.height - 15),
+      radius: const Radius.circular(15),
+    );
+    path.lineTo(size.width - 15, size.height - 15);
+    path.arcToPoint(
+      Offset(size.width, size.height),
+      radius: const Radius.circular(15),
+    );
+    path.lineTo(size.width, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class DetailCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 30
+      ..color = Colors.amber;
+    final path = Path();
+    path.lineTo(0, size.height);
+    path.arcToPoint(
+      Offset(15, size.height - 15),
+      radius: const Radius.circular(15),
+    );
+    path.lineTo(size.width - 15, size.height - 15);
+    path.arcToPoint(
+      Offset(size.width, size.height),
+      radius: const Radius.circular(15),
+    );
+    path.lineTo(size.width, 0);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
