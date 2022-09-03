@@ -67,7 +67,7 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,6 +91,9 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                         .headline6
                         ?.copyWith(fontSize: 15),
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   DealListTile(
                     imageUrl: imageUrl,
                     title: title,
@@ -106,7 +109,7 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                       return [
                         if (gameInfo!.deals.isNotEmpty)
                           const SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
                         if (gameInfo.deals.isNotEmpty &&
                             gameInfo.deals.length > 1)
@@ -125,6 +128,10 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
                                 .textTheme
                                 .headline6
                                 ?.copyWith(fontSize: 15),
+                          ),
+                        if (gameInfo.deals.isNotEmpty)
+                          const SizedBox(
+                            height: 5,
                           ),
                         ...gameInfo.deals.map(
                           (e) {

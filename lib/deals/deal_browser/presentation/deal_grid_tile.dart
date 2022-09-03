@@ -55,7 +55,7 @@ class DealGridTile extends StatelessWidget {
                   steamRatingCount: dealResult.steamProp.steamRatingCount,
                   dealSaving: dealResult.dealSavings,
                   normalPrice: dealResult.dealNormalPrice,
-                  salePrice: dealResult.dealNormalPrice,
+                  salePrice: dealResult.dealSalePrice,
                 ),
               ],
             ),

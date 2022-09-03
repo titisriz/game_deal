@@ -13,7 +13,7 @@ class DealStoreRepository {
     this._dealStoreLocalRepository,
   );
 
-  Future<Either<DealFailure, Unit>> saveStore() async {
+  Future<Either<DealFailure, Unit>> getAndSaveStore() async {
     try {
       final dealStoreRemote = await _dealStoreRemoteRepository.getStores();
       return dealStoreRemote.map(
@@ -37,7 +37,7 @@ class DealStoreRepository {
   Future<List<DealStore>> getStores() async {
     final stores = await _dealStoreLocalRepository.getStores();
     if (stores.isEmpty) {
-      saveStore();
+      getAndSaveStore();
     }
     return stores.map((e) => e.toDomain()).toList();
   }

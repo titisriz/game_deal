@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game_deal/core/infrastructure/sembast_database.dart';
-import 'package:game_deal/theme/presentation/application/application_theme.dart';
+import 'package:game_deal/theme/application/application_theme.dart';
 import 'package:game_deal/theme/presentation/dark.dart';
 import 'package:game_deal/theme/presentation/light.dart';
 

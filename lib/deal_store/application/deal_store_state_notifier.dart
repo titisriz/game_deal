@@ -30,12 +30,6 @@ class DealStoreStateNotifier extends StateNotifier<DealStoreState> {
         : state = DealStoreState.loadSuccess(stores);
   }
 
-  Future<DealStore?> getStoreDB(String storeID) async {
-    return state.maybeMap(
-        orElse: () => null,
-        loadSuccess: (_) async => await _repository.getStore(storeID));
-  }
-
   DealStore? getStore(String storeID) {
     return state
         .maybeMap(

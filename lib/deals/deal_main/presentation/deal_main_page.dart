@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game_deal/deals/deal_main/presentation/deal_by_store_section.dart';
 import 'package:game_deal/deals/deal_main/presentation/horizontal_game_section.dart';
 
 import 'package:game_deal/deals/deal_main/shared/providers.dart';
 
-class DealMainPage extends StatefulWidget {
+class DealMainPage extends ConsumerWidget {
   const DealMainPage({Key? key}) : super(key: key);
 
   @override
-  State<DealMainPage> createState() => _DealMainPageState();
-}
-
-class _DealMainPageState extends State<DealMainPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sections = [
       HorizontalGameSection(
         title: "Free Games",
@@ -43,11 +39,23 @@ class _DealMainPageState extends State<DealMainPage> {
         title: const Text('Home'),
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: sections.length,
-          itemBuilder: (context, index) {
-            return sections[index];
+        child: RefreshIndicator(
+          onRefresh: () async {
+            ref.watch(freeGamesStateNotifierProvider.notifier).getFreeGames();
+            ref
+                .watch(popularDealStateNotifierProvider.notifier)
+                .getPopularDeal();
+            ref
+                .watch(recentDealStateNotifierProvider.notifier)
+                .getMostRecentDeal();
           },
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: sections.length,
+            itemBuilder: (context, index) {
+              return sections[index];
+            },
+          ),
         ),
       ),
     );

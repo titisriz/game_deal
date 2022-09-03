@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_deal/theme/presentation/application/application_theme.dart';
+import 'package:game_deal/theme/application/application_theme.dart';
 
 class DarkTheme extends ApplicationTheme {
   final primaryColor = const Color(0xffe7ac5e);

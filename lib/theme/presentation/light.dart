@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_deal/theme/presentation/application/application_theme.dart';
+import 'package:game_deal/theme/application/application_theme.dart';
 
 // final baseColor = Colors.grey.shade200;
 // final highlightColor = Colors.grey.shade100;
