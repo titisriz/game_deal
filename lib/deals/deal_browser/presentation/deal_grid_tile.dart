@@ -60,7 +60,7 @@ class DealGridTile extends StatelessWidget {
               ],
             ),
           ),
-          if (store != null) GetOfferButton(dealId: dealResult.dealID)
+          GetOfferButton(dealId: dealResult.dealID)
         ],
       ),
     );

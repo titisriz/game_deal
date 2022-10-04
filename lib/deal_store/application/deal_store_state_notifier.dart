@@ -25,9 +25,12 @@ class DealStoreStateNotifier extends StateNotifier<DealStoreState> {
   Future<void> fetchStoreData() async {
     state = const DealStoreState.loading([]);
     final stores = await _repository.getStores();
-    stores.isEmpty
-        ? state = DealStoreState.emptyData(stores)
-        : state = DealStoreState.loadSuccess(stores);
+    stores.fold(
+      (l) => const DealStoreState.emptyData([]),
+      (r) => r.isEmpty
+          ? state = DealStoreState.emptyData(r)
+          : state = DealStoreState.loadSuccess(r),
+    );
   }
 
   DealStore? getStore(String storeID) {

@@ -13,7 +13,7 @@ class DealStoreRepository {
     this._dealStoreLocalRepository,
   );
 
-  Future<Either<DealFailure, Unit>> getAndSaveStore() async {
+  Future<Either<DealFailure, List<DealStore>>> getAndSaveStore() async {
     try {
       final dealStoreRemote = await _dealStoreRemoteRepository.getStores();
       return dealStoreRemote.map(
@@ -22,11 +22,11 @@ class DealStoreRepository {
           if (stores.isEmpty) {
             return left(const DealFailure.apiFailure(errorCode: 0));
           }
-          return right(unit);
+          return right(stores.map((e) => e.toDomain()).toList());
         },
         withData: (_) async {
           _dealStoreLocalRepository.upsert(_.data);
-          return right(unit);
+          return right(_.data.map((e) => e.toDomain()).toList());
         },
       );
     } on RestApiException catch (e) {
@@ -34,12 +34,12 @@ class DealStoreRepository {
     }
   }
 
-  Future<List<DealStore>> getStores() async {
+  Future<Either<DealFailure, List<DealStore>>> getStores() async {
     final stores = await _dealStoreLocalRepository.getStores();
     if (stores.isEmpty) {
-      getAndSaveStore();
+      return await getAndSaveStore();
     }
-    return stores.map((e) => e.toDomain()).toList();
+    return right(stores.map((e) => e.toDomain()).toList());
   }
 
   Future<DealStore?> getStore(String storeID) async {
