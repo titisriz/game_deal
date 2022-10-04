@@ -340,7 +340,10 @@ class StoreSelection extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
+                            cacheKey: e.images.iconUrl,
                             imageUrl: e.images.iconUrl,
+                            memCacheHeight: 15,
+                            memCacheWidth: 15,
                           ),
                         ),
                         const SizedBox(

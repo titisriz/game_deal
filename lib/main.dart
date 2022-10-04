@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: App()));
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -18,15 +18,5 @@ class MyHttpOverrides extends HttpOverrides {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return ProviderScope(child: App());
   }
 }

@@ -12,8 +12,6 @@ class DealByStoreSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeStores = ref.watch(activeStoreProvider);
     return Column(
-      // shrinkWrap: true,
-      // physics: const NeverScrollableScrollPhysics(),
       mainAxisSize: MainAxisSize.min,
       children: [
         if (activeStores.isNotEmpty)
