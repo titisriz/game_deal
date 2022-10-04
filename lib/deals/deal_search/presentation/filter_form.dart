@@ -324,11 +324,9 @@ class StoreSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      // crossAxisAlignment: WrapCrossAlignment.start,
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 0,
-      // verticalDirection: VerticalDirection.down,
       children: [
         ...ref
             .watch(activeStoreProvider)
@@ -339,16 +337,16 @@ class StoreSelection extends StatelessWidget {
                     label: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(e.storeName),
-                        const SizedBox(
-                          width: 2,
-                        ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
                             imageUrl: e.images.iconUrl,
                           ),
                         ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        Text(e.storeName),
                       ],
                     ),
                     selected: filterFormState.isStoreSelected(e.storeID),

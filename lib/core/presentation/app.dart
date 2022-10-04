@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final initializationProvider = FutureProvider((ref) async {
   await ref.read(sembastProvider).init();
-  ref.read(dealStoreStateNotifier.notifier).fetchStoreData();
+  await ref.read(dealStoreStateNotifier.notifier).fetchStoreData();
 });
 
 class App extends ConsumerWidget {
