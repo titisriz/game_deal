@@ -4,9 +4,11 @@ import 'package:game_deal/theme/application/application_theme.dart';
 class DarkTheme extends ApplicationTheme {
   final primaryColor = const Color(0xffe7ac5e);
   final onPrimaryColor = const Color(0xff2A1700);
-  final scaffoldBgColor = const Color(0xff001D1B);
-  final onScaffoldBgColor = Colors.white;
-  final cardColor = const Color.fromARGB(255, 0, 45, 42);
+  final scaffoldBgColor = const Color.fromARGB(255, 10, 24, 23);
+  // final scaffoldBgColor = const Color(0xff001D1B);
+  final onScaffoldBgColor = Colors.white.withOpacity(.8);
+  // final cardColor = const Color.fromARGB(255, 0, 45, 42);
+  final cardColor = const Color(0xff001D1B);
   final appBarColor = const Color.fromARGB(255, 0, 45, 42);
   final bottomNavBarColor = const Color.fromARGB(255, 0, 45, 42);
   final unselectedColor = const Color.fromARGB(255, 1, 83, 78);

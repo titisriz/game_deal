@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_deal/deals/core/presentation/discount_display.dart';
 
 class PriceHorizontalSection extends StatelessWidget {
   const PriceHorizontalSection({
@@ -18,19 +19,7 @@ class PriceHorizontalSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-              color: Colors.green.shade600,
-              borderRadius: BorderRadius.circular(5)),
-          child: Text(
-            savings,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.lightGreen.shade100,
-            ),
-          ),
-        ),
+        DiscountDisplay(savings: savings),
         const SizedBox(
           width: 5,
         ),

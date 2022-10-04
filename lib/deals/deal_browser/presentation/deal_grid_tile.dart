@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:game_deal/core/presentation/image_size_config.dart';
 import 'package:game_deal/core/presentation/router/app_router.gr.dart';
@@ -7,8 +6,8 @@ import 'package:game_deal/core/presentation/router/app_router.gr.dart';
 import 'package:game_deal/deal_store/domain/deal_store.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
 import 'package:game_deal/core/presentation/image_display.dart';
+import 'package:game_deal/deals/core/presentation/discount_display.dart';
 import 'package:game_deal/deals/deal_browser/presentation/deal_tag.dart';
-import 'package:game_deal/deals/deal_browser/presentation/icon_tag.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -26,7 +25,8 @@ class DealGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageTag = const Uuid().v1();
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -42,25 +42,20 @@ class DealGridTile extends StatelessWidget {
               children: [
                 GameImage(
                   imageTag: imageTag,
-                  image: dealResult.headerImgUrl,
-                  fallbackImage: dealResult.thumb,
+                  dealResult: dealResult,
+                  storeName: store?.storeName ?? "",
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 GameInfo(
                   store: store,
-                  title: dealResult.title,
-                  rating: dealResult.rating,
-                  steamRatingCount: dealResult.steamProp.steamRatingCount,
-                  dealSaving: dealResult.dealSavings,
-                  normalPrice: dealResult.dealNormalPrice,
-                  salePrice: dealResult.dealSalePrice,
+                  dealResult: dealResult,
                 ),
               ],
             ),
           ),
-          GetOfferButton(dealId: dealResult.dealID)
+          // GetOfferButton(dealId: dealResult.dealID)
         ],
       ),
     );
@@ -68,92 +63,47 @@ class DealGridTile extends StatelessWidget {
 }
 
 class GameInfo extends StatelessWidget {
-  const GameInfo({
-    Key? key,
-    required this.store,
-    required this.title,
-    required this.rating,
-    required this.steamRatingCount,
-    required this.dealSaving,
-    required this.normalPrice,
-    required this.salePrice,
-  }) : super(key: key);
+  const GameInfo({Key? key, required this.store, required this.dealResult})
+      : super(key: key);
 
   final DealStore? store;
-  final String title;
-  final String rating;
-  final String steamRatingCount;
-  final String dealSaving;
-  final String normalPrice;
-  final String salePrice;
+  final DealResult dealResult;
 
   @override
   Widget build(BuildContext context) {
+    final isDiscount = double.parse(dealResult.savings) > 0;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            dealResult.title,
             style:
-                Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15),
+                Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 18),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
+          if (isDiscount) const SizedBox(height: 5),
+          if (isDiscount) DiscountDisplay(savings: dealResult.dealSavings),
           const SizedBox(height: 5),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconTag(
-                      text: rating,
-                      iconData: Icons.star_rounded,
-                      size: 13,
-                    ),
-                    IconTag(
-                        text: '$steamRatingCount Reviews',
-                        iconData: Icons.comment,
-                        size: 13),
-                    if (store != null)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: CachedNetworkImage(
-                          imageUrl: store!.images.iconUrl,
-                          cacheKey: store!.images.iconUrl,
-                          memCacheHeight: 15,
-                          memCacheWidth: 15,
-                        ),
-                      )
-                  ],
-                ),
+              DealTag(
+                tag: dealResult.dealSalePrice,
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  DealTag(
-                    tag: dealSaving,
-                    fontSize: 13,
-                  ),
-                  DealTag(
-                    tag: normalPrice,
-                    textDecoration: TextDecoration.lineThrough,
-                    fontSize: 13,
-                  ),
-                  DealTag(
-                    tag: salePrice,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                  ),
-                ],
-              )
+              const SizedBox(
+                width: 5,
+              ),
+              if (isDiscount)
+                DealTag(
+                  tag: dealResult.dealNormalPrice,
+                  textDecoration: TextDecoration.lineThrough,
+                  fontSize: 15,
+                ),
             ],
-          ),
-          const SizedBox(
-            height: 5,
           ),
         ],
       ),
@@ -164,40 +114,81 @@ class GameInfo extends StatelessWidget {
 class GameImage extends StatelessWidget {
   const GameImage({
     Key? key,
-    required this.image,
-    required this.fallbackImage,
     required this.imageTag,
+    required this.storeName,
+    required this.dealResult,
   }) : super(key: key);
-  final String image;
-  final String fallbackImage;
   final String imageTag;
+  final String storeName;
+  final DealResult dealResult;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(5),
-        topRight: Radius.circular(5),
-      ),
+      borderRadius: const BorderRadius.all(Radius.circular(5)),
       child: Hero(
         tag: imageTag,
-        child: ImageDisplay(
-          url: image,
-          fit: BoxFit.fitWidth,
-          ratio: headerRatio,
-          height: tileHeight,
-          width: tileWidth,
-          errorWidget: ImageDisplay(
-            url: fallbackImage,
-            fit: BoxFit.fitWidth,
-            ratio: headerRatio,
-            height: tileHeight,
-            width: tileWidth,
-            errorWidget: const Icon(
-              MdiIcons.googleControllerOff,
-              size: 50,
+        child: Stack(
+          children: [
+            ImageDisplay(
+              url: dealResult.headerImgUrl,
+              fit: BoxFit.cover,
+              ratio: headerRatio,
+              errorWidget: ImageDisplay(
+                url: dealResult.thumb,
+                fit: BoxFit.cover,
+                ratio: headerRatio,
+                errorWidget: const Icon(
+                  MdiIcons.googleControllerOff,
+                  size: 50,
+                ),
+              ),
             ),
-          ),
+            storeName.isNotEmpty
+                ? Positioned(
+                    bottom: 5,
+                    left: 5,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.8),
+                      padding: const EdgeInsets.only(
+                          top: 1, bottom: 1, left: 2, right: 2),
+                      child: Text(
+                        storeName,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                : Container(),
+            if (dealResult.steamRatingPercent > 0)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  height: 30,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.8),
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(5))),
+                  child: SizedBox(
+                    child: RichText(
+                      text: TextSpan(children: [
+                        const WidgetSpan(
+                            child: Icon(
+                          Icons.star_rounded,
+                          size: 15,
+                        )),
+                        TextSpan(
+                            text: dealResult.ratingRounded,
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ]),
+                    ),
+                  ),
+                ),
+              )
+          ],
         ),
       ),
     );

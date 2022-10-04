@@ -36,58 +36,58 @@ class DealGridView extends ConsumerWidget {
               pageNumber: browseFilterState.pageNumber + 1));
           final newDealFilterState =
               ref.watch(browseFilterStateNotifierProvider);
-          print('new dealFilterState ${newDealFilterState.pageNumber}');
+          // print('new dealFilterState ${newDealFilterState.pageNumber}');
           dealStateNotifier.getFilteredDeal(newDealFilterState);
           _canLoadNextPage = false;
         }
 
         return false;
       },
-      child: MasonryGridView.builder(
-        physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        // crossAxisCount: 2,
-
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 2,
-        itemCount: state.map(
-            initial: (_) => _.dealResults.content.length,
-            loadInProgress: (_) =>
-                _.dealResults.content.length + dealPaginationSizeLoading,
-            loadSuccess: (_) {
-              return _.dealResults.isEmptyResult
-                  ? 1
-                  : _.dealResults.content.length;
-            },
-            loadFailure: (_) => _.dealResults.content.length + 1),
-
-        itemBuilder: (context, index) {
-          return state.map(
-            initial: (_) => Container(),
-            loadInProgress: (_) {
-              if (index < _.dealResults.content.length) {
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: MasonryGridView.builder(
+          physics: const BouncingScrollPhysics(),
+          gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          padding: const EdgeInsets.only(top: 20),
+          crossAxisSpacing: 15,
+          itemCount: state.map(
+              initial: (_) => _.dealResults.content.length,
+              loadInProgress: (_) =>
+                  _.dealResults.content.length + dealPaginationSizeLoading,
+              loadSuccess: (_) {
+                return _.dealResults.isEmptyResult
+                    ? 1
+                    : _.dealResults.content.length;
+              },
+              loadFailure: (_) => _.dealResults.content.length + 1),
+          itemBuilder: (context, index) {
+            return state.map(
+              initial: (_) => Container(),
+              loadInProgress: (_) {
+                if (index < _.dealResults.content.length) {
+                  final deal = _.dealResults.content[index];
+                  final store = dealStoreStateNotifier.getStore(deal.storeID);
+                  return DealGridTile(
+                    dealResult: deal,
+                    store: store,
+                  );
+                }
+                return const DealGridTileLoading();
+              },
+              loadSuccess: (_) {
                 final deal = _.dealResults.content[index];
                 final store = dealStoreStateNotifier.getStore(deal.storeID);
                 return DealGridTile(
                   dealResult: deal,
                   store: store,
                 );
-              }
-              return const DealGridTileLoading();
-            },
-            loadSuccess: (_) {
-              final deal = _.dealResults.content[index];
-              final store = dealStoreStateNotifier.getStore(deal.storeID);
-              return DealGridTile(
-                dealResult: deal,
-                store: store,
-              );
-            },
-            loadFailure: (_) => Container(),
-          );
-        },
+              },
+              loadFailure: (_) => Container(),
+            );
+          },
+        ),
       ),
     );
   }

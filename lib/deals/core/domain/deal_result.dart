@@ -22,9 +22,17 @@ class DealResult with _$DealResult {
     required SteamProp steamProp,
   }) = _DealResult;
 
+  int get steamRatingPercent {
+    return int.parse(steamProp.steamRatingPercent);
+  }
+
   String get rating {
+    return '$ratingRounded /10';
+  }
+
+  String get ratingRounded {
     int steamRating = int.parse(steamProp.steamRatingPercent);
-    return '${(steamRating / 10).toStringAsFixed(1)} /10';
+    return (steamRating / 10).toStringAsFixed(1);
   }
 
   String get dealSavings => '-${double.parse(savings).toStringAsFixed(0)}%';

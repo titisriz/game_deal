@@ -17,76 +17,70 @@ class DealGridTileLoading extends ConsumerWidget {
     return Shimmer.fromColors(
       baseColor: theme.shimmerBaseColor,
       highlightColor: theme.shimmerHighlightColor,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: theme.shimmerBaseColor),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-        child: Column(
-          children: [
-            ImagePlaceholder(ratio: headerRatio),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: double.infinity,
-                height: 15,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(3),
-                  ),
+      child: Column(
+        children: [
+          ImagePlaceholder(ratio: headerRatio),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              width: double.infinity,
+              height: 15,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(3),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 13,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 13,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(3),
                           ),
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: 70,
-                          height: 13,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3),
-                            ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 70,
+                        height: 13,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(3),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            )
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 25,
+          )
+        ],
       ),
     );
   }

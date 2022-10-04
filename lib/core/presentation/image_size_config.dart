@@ -1,4 +1,3 @@
-const headerRatio = 16 / 7;
-const capsuleRatio = 8 / 3;
-const tileWidth = 503;
-const tileHeight = 220;
+// const headerRatio = 16 / 7;
+const headerRatio = 1 / 1;
+const capsuleRatio = 1 / 1;
