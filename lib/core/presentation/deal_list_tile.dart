@@ -44,7 +44,7 @@ class DealListTile extends StatelessWidget {
         onTap: () async {
           await launchUrl(
               Uri.parse('https://www.cheapshark.com/redirect?dealID=$dealID'),
-              mode: LaunchMode.inAppWebView,
+              mode: LaunchMode.externalApplication,
               webViewConfiguration: const WebViewConfiguration(
                 enableJavaScript: true,
               ));

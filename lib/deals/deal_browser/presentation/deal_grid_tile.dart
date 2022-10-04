@@ -220,7 +220,7 @@ class GetOfferButton extends StatelessWidget {
       onPressed: () async {
         await launchUrl(
             Uri.parse('https://www.cheapshark.com/redirect?dealID=$dealId'),
-            mode: LaunchMode.inAppWebView,
+            mode: LaunchMode.externalApplication,
             webViewConfiguration: const WebViewConfiguration(
               enableJavaScript: true,
             ));
