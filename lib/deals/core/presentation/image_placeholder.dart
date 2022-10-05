@@ -18,12 +18,8 @@ class ImagePlaceholder extends StatelessWidget {
       aspectRatio: ratio ?? headerRatio,
       child: Container(
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(5),
-            topRight: Radius.circular(5),
-          ),
-        ),
+            color: color,
+            borderRadius: const BorderRadius.all(Radius.circular(5))),
         child: child,
       ),
     );

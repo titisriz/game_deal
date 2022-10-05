@@ -47,7 +47,6 @@ class _HorizontalGameSectionState extends ConsumerState<HorizontalGameSection> {
         if (value.dealResults.isEmptyResult) {
           return Container();
         }
-        // return const SectionLoading();
         return Section(title: widget.title, state: state);
       },
     );
@@ -71,29 +70,32 @@ class Section extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(
-          height: 10,
+          height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(left: 20),
           child: Text(
             title,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Row(
-            children: state.dealResults.content
-                .map(
-                  (e) => HorizontalGameCard(
-                    key: UniqueKey(),
-                    dealResult: e,
-                  ),
-                )
-                .toList(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: state.dealResults.content
+                  .map(
+                    (e) => HorizontalGameCard(
+                      key: UniqueKey(),
+                      dealResult: e,
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         ),
       ],
@@ -109,7 +111,7 @@ class SectionLoading extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(currentThemeProvider);
     return Padding(
-      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 8),
+      padding: const EdgeInsets.only(top: 10, bottom: 5, left: 10),
       child: Shimmer.fromColors(
         baseColor: theme.shimmerBaseColor,
         highlightColor: theme.shimmerHighlightColor,
@@ -121,6 +123,7 @@ class SectionLoading extends ConsumerWidget {
               height: 10,
             ),
             Container(
+              margin: const EdgeInsets.only(left: 5),
               width: 180,
               height: 20,
               decoration: const BoxDecoration(

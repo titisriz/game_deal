@@ -17,20 +17,21 @@ class HorizontalGameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageTag = const Uuid().v1();
+    final size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () {
         AutoRouter.of(context)
             .push(DealDetailRoute(imageTag: imageTag, dealResult: dealResult));
       },
-      child: Card(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         child: SizedBox(
-          width: 150,
+          width: size.width * 0.4,
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                borderRadius: BorderRadius.circular(6),
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: [
@@ -40,8 +41,8 @@ class HorizontalGameCard extends StatelessWidget {
                         child: ImageDisplay(
                           url: dealResult.headerImgUrl,
                           ratio: 8 / 4,
-                          fit: BoxFit.fill,
-                          alignment: Alignment.topCenter,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
                           errorWidget: ImageDisplay(
                             url: dealResult.thumb,
                             ratio: 8 / 4,
@@ -87,25 +88,27 @@ class HorizontalGameCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Container(
-                  // height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    dealResult.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
+                child: Text(
+                  dealResult.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
               ),
               const SizedBox(
                 height: 5,
               ),
-              PriceHorizontalSection(
-                  savings: dealResult.dealSavings,
-                  normalPrice: dealResult.dealNormalPrice,
-                  dealPrice: dealResult.dealSalePrice),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: PriceHorizontalSection(
+                    savings: dealResult.dealSavings,
+                    normalPrice: dealResult.dealNormalPrice,
+                    dealPrice: dealResult.dealSalePrice),
+              ),
               const SizedBox(
                 height: 5,
               )
