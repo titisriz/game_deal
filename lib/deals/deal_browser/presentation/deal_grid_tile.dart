@@ -144,51 +144,66 @@ class GameImage extends StatelessWidget {
                 ),
               ),
             ),
-            storeName.isNotEmpty
-                ? Positioned(
-                    bottom: 5,
-                    left: 5,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.8),
-                      padding: const EdgeInsets.only(
-                          top: 1, bottom: 1, left: 2, right: 2),
-                      child: Text(
-                        storeName,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )
-                : Container(),
-            if (dealResult.steamRatingPercent > 0)
+            if (storeName.isNotEmpty)
               Positioned(
-                top: 0,
-                right: 0,
+                bottom: 5,
+                left: 5,
                 child: Container(
-                  padding: const EdgeInsets.all(2),
-                  height: 30,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.8),
-                      borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(5))),
-                  child: SizedBox(
-                    child: RichText(
-                      text: TextSpan(children: [
-                        const WidgetSpan(
-                            child: Icon(
-                          Icons.star_rounded,
-                          size: 15,
-                        )),
-                        TextSpan(
-                            text: dealResult.ratingRounded,
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ]),
-                    ),
+                  color: Colors.black.withOpacity(0.8),
+                  padding: const EdgeInsets.only(
+                      top: 1, bottom: 1, left: 2, right: 2),
+                  child: Text(
+                    storeName,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-              )
+              ),
+            if (dealResult.steamRatingPercent > 0)
+              GameRating(rating: dealResult.steamRatingRounded),
+            if (dealResult.steamRatingPercent == 0 &&
+                dealResult.metaCriticRatingPercent > 0)
+              GameRating(rating: dealResult.metaCriticRatingRounded)
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GameRating extends StatelessWidget {
+  const GameRating({
+    Key? key,
+    required this.rating,
+  }) : super(key: key);
+
+  final String rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      right: 0,
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        height: 30,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.8),
+            borderRadius:
+                const BorderRadius.only(bottomLeft: Radius.circular(5))),
+        child: SizedBox(
+          child: RichText(
+            text: TextSpan(children: [
+              const WidgetSpan(
+                  child: Icon(
+                Icons.star_rounded,
+                size: 15,
+              )),
+              TextSpan(
+                  text: rating, style: Theme.of(context).textTheme.bodyLarge),
+            ]),
+          ),
         ),
       ),
     );

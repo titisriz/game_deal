@@ -26,13 +26,25 @@ class DealResult with _$DealResult {
     return int.parse(steamProp.steamRatingPercent);
   }
 
-  String get rating {
-    return '$ratingRounded /10';
+  String get steamRating {
+    return '$steamRatingRounded /10';
   }
 
-  String get ratingRounded {
+  String get steamRatingRounded {
     int steamRating = int.parse(steamProp.steamRatingPercent);
     return (steamRating / 10).toStringAsFixed(1);
+  }
+
+  int get metaCriticRatingPercent {
+    return int.parse(metaCriticProp.metacriticScore ?? '0');
+  }
+
+  String get metaCriticRatingRounded {
+    return (metaCriticRatingPercent / 10).toStringAsFixed(1);
+  }
+
+  String get metaCriticRating {
+    return '${metaCriticProp.metacriticScore} /10';
   }
 
   String get dealSavings => '-${double.parse(savings).toStringAsFixed(0)}%';
