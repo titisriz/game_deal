@@ -5,6 +5,7 @@ import 'package:game_deal/deals/deal_browser/presentation/deal_grid_view.dart';
 import 'package:game_deal/deals/deal_search/presentation/filter_form.dart';
 import 'package:game_deal/deals/deal_browser/presentation/no_result.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DealBrowserPage extends ConsumerStatefulWidget {
   const DealBrowserPage({Key? key}) : super(key: key);
@@ -94,7 +95,7 @@ class _DealBrowserPageState extends ConsumerState<DealBrowserPage> {
               },
             );
           },
-          icon: const Icon(Icons.filter_alt_sharp),
+          icon: const Icon(MdiIcons.tune),
         ),
       ],
     );

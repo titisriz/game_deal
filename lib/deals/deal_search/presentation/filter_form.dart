@@ -24,21 +24,25 @@ class _FilterFormState extends ConsumerState<FilterForm> {
     });
   }
 
+  Color getChipColor(bool selected, BuildContext context) {
+    return selected ? Theme.of(context).colorScheme.onPrimary : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     final filterFormStateNotifier =
         ref.watch(formFilterStateNotifierProvider.notifier);
     final filterFormState = ref.watch(formFilterStateNotifierProvider);
-    final titleStyle =
-        Theme.of(context).textTheme.headline6?.copyWith(fontSize: 15);
+    final titleStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
+          fontSize: 17,
+        );
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.80,
-      // padding: const EdgeInsets.all(10.0),
       width: double.infinity,
       child: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 15),
             child: SizedBox(
               width: 100,
               child: Divider(height: 5, thickness: 5, color: Colors.grey),
@@ -50,8 +54,9 @@ class _FilterFormState extends ConsumerState<FilterForm> {
           const Divider(color: Colors.grey, height: 1),
           Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Form(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -72,25 +77,28 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                         ],
                       ),
                       Wrap(
-                        children: sortMap.entries
-                            .map((mapEntry) => Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: FilterChip(
-                                    label: Text(mapEntry.key),
-                                    selected:
-                                        filterFormState.sortBy == mapEntry.key
-                                            ? true
-                                            : false,
-                                    onSelected: (bool selected) {
-                                      filterFormStateNotifier.updateState(
-                                        filterFormState.copyWith(
-                                          sortBy: mapEntry.key,
-                                        ),
-                                      );
-                                    },
+                        children: sortMap.entries.map((mapEntry) {
+                          bool selected = filterFormState.sortBy == mapEntry.key
+                              ? true
+                              : false;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: FilterChip(
+                              label: Text(mapEntry.key,
+                                  style: TextStyle(
+                                      color: getChipColor(selected, context))),
+                              selected: selected,
+                              onSelected: (bool selected) {
+                                setState(() {});
+                                filterFormStateNotifier.updateState(
+                                  filterFormState.copyWith(
+                                    sortBy: mapEntry.key,
                                   ),
-                                ))
-                            .toList(),
+                                );
+                              },
+                            ),
+                          );
+                        }).toList(),
                       ),
                       const SizedBox(
                         height: 5,
@@ -114,6 +122,7 @@ class _FilterFormState extends ConsumerState<FilterForm> {
                           filterFormStateNotifier: filterFormStateNotifier,
                           ref: ref),
                       StoreSelection(
+                          getChipColor: getChipColor,
                           ref: ref,
                           filterFormState: filterFormState,
                           filterFormStateNotifier: filterFormStateNotifier),
@@ -309,18 +318,25 @@ class PriceRangeSlider extends StatelessWidget {
   }
 }
 
-class StoreSelection extends StatelessWidget {
-  const StoreSelection({
-    Key? key,
-    required this.ref,
-    required this.filterFormState,
-    required this.filterFormStateNotifier,
-  }) : super(key: key);
+class StoreSelection extends StatefulWidget {
+  const StoreSelection(
+      {Key? key,
+      required this.ref,
+      required this.filterFormState,
+      required this.filterFormStateNotifier,
+      required this.getChipColor})
+      : super(key: key);
 
   final WidgetRef ref;
   final FormFilterState filterFormState;
   final FormFilterStateNotifier filterFormStateNotifier;
+  final Color Function(bool selected, BuildContext context) getChipColor;
 
+  @override
+  State<StoreSelection> createState() => _StoreSelectionState();
+}
+
+class _StoreSelectionState extends State<StoreSelection> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -328,38 +344,44 @@ class StoreSelection extends StatelessWidget {
       direction: Axis.horizontal,
       spacing: 0,
       children: [
-        ...ref
-            .watch(activeStoreProvider)
-            .map((e) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: ChoiceChip(
-                    key: Key(e.storeID),
-                    label: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            cacheKey: e.images.iconUrl,
-                            imageUrl: e.images.iconUrl,
-                            memCacheHeight: 15,
-                            memCacheWidth: 15,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Text(e.storeName),
-                      ],
+        ...widget.ref.watch(activeStoreProvider).map((e) {
+          bool selected = widget.filterFormState.isStoreSelected(e.storeID);
+          return Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: ChoiceChip(
+              key: Key(e.storeID),
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      cacheKey: e.images.iconUrl,
+                      imageUrl: e.images.iconUrl,
+                      memCacheHeight: 15,
+                      memCacheWidth: 15,
                     ),
-                    selected: filterFormState.isStoreSelected(e.storeID),
-                    onSelected: (value) {
-                      filterFormStateNotifier.switchSelectStore(
-                          value, e.storeID);
-                    },
                   ),
-                ))
-            .toList()
+                  const SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    e.storeName,
+                    style: TextStyle(
+                      color: widget.getChipColor(selected, context),
+                    ),
+                  ),
+                ],
+              ),
+              selected: selected,
+              onSelected: (value) {
+                setState(() {});
+                widget.filterFormStateNotifier
+                    .switchSelectStore(value, e.storeID);
+              },
+            ),
+          );
+        }).toList()
       ],
     );
   }
