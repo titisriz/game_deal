@@ -83,6 +83,7 @@ class Section extends StatelessWidget {
           height: 10,
         ),
         SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -135,6 +136,7 @@ class SectionLoading extends ConsumerWidget {
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
               child: Row(
                   children: Iterable.generate(5)
                       .map((e) => const HorizontalGameCardLoading())
