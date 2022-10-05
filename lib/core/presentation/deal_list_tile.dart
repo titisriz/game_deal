@@ -23,33 +23,35 @@ class DealListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: ListTile(
-        style: ListTileStyle.drawer,
-        leading: CircleAvatar(
-          backgroundImage: ResizeImage(CachedNetworkImageProvider(imageUrl),
-              width: 100, height: 100),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 2),
-          child: Text(
-            title,
-            style: const TextStyle(fontSize: 16),
+    return Column(
+      children: [
+        ListTile(
+          style: ListTileStyle.drawer,
+          leading: CircleAvatar(
+            backgroundImage: ResizeImage(CachedNetworkImageProvider(imageUrl),
+                width: 100, height: 100),
           ),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+          subtitle: PriceHorizontalSection(
+              savings: savings, normalPrice: normalPrice, dealPrice: dealPrice),
+          trailing: const Icon(Icons.navigate_next),
+          onTap: () async {
+            await launchUrl(
+                Uri.parse('https://www.cheapshark.com/redirect?dealID=$dealID'),
+                mode: LaunchMode.externalApplication,
+                webViewConfiguration: const WebViewConfiguration(
+                  enableJavaScript: true,
+                ));
+          },
         ),
-        subtitle: PriceHorizontalSection(
-            savings: savings, normalPrice: normalPrice, dealPrice: dealPrice),
-        trailing: const Icon(Icons.navigate_next),
-        onTap: () async {
-          await launchUrl(
-              Uri.parse('https://www.cheapshark.com/redirect?dealID=$dealID'),
-              mode: LaunchMode.externalApplication,
-              webViewConfiguration: const WebViewConfiguration(
-                enableJavaScript: true,
-              ));
-        },
-      ),
+        const Divider()
+      ],
     );
   }
 }

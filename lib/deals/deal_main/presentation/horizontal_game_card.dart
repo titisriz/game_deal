@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 import 'package:game_deal/core/presentation/router/app_router.gr.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
@@ -40,12 +41,12 @@ class HorizontalGameCard extends StatelessWidget {
                         tag: imageTag,
                         child: ImageDisplay(
                           url: dealResult.headerImgUrl,
-                          ratio: 8 / 4,
+                          ratio: horizontalGameCardRatio,
                           fit: BoxFit.cover,
                           alignment: Alignment.center,
                           errorWidget: ImageDisplay(
                             url: dealResult.thumb,
-                            ratio: 8 / 4,
+                            ratio: horizontalGameCardRatio,
                             fit: BoxFit.cover,
                             alignment: Alignment.topCenter,
                             errorWidget: const Icon(

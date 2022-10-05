@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 import 'package:game_deal/core/shared/providers.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
 
@@ -19,7 +20,8 @@ class HorizontalGameCardLoading extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ImagePlaceholder(ratio: 8 / 4, color: theme.shimmerBaseColor),
+            ImagePlaceholder(
+                ratio: horizontalGameCardRatio, color: theme.shimmerBaseColor),
             const SizedBox(
               height: 5,
             ),

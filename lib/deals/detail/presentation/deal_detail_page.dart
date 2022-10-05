@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game_deal/core/presentation/deal_list_tile.dart';
 import 'package:game_deal/core/presentation/image_display.dart';
+import 'package:game_deal/core/presentation/image_size_config.dart';
 import 'package:game_deal/deal_store/shared/providers.dart';
 import 'package:game_deal/deals/core/domain/deal_result.dart';
 import 'package:game_deal/deals/core/presentation/image_placeholder.dart';
@@ -38,6 +39,7 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
     final savings = widget.dealResult.dealSavings;
     final normalPrice = widget.dealResult.normalPrice;
     final dealPrice = widget.dealResult.dealSalePrice;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -46,22 +48,19 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
           children: [
             ClipPath(
               clipper: DetailCustomClipper(),
-              child: CustomPaint(
-                painter: DetailCustomPainter(),
-                child: Hero(
-                  tag: widget.imageTag,
-                  child: ImageDisplay(
-                    url: widget.dealResult.headerImgUrl,
-                    errorWidget: ImageDisplay(
-                      url: widget.dealResult.thumb,
-                      errorWidget: ImagePlaceholder(
-                        ratio: 2 / 1,
-                      ),
-                      fit: BoxFit.fill,
-                      ratio: 2 / 1,
-                    ),
-                    fit: BoxFit.fill,
-                    ratio: 2 / 1,
+              child: Hero(
+                tag: widget.imageTag,
+                child: ImageDisplay(
+                  url: widget.dealResult.headerImgUrl,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  ratio: detailHeroRatio,
+                  errorWidget: ImageDisplay(
+                    url: widget.dealResult.thumb,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    ratio: detailHeroRatio,
+                    errorWidget: ImagePlaceholder(),
                   ),
                 ),
               ),
