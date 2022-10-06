@@ -41,122 +41,148 @@ class _DealDetailPageState extends ConsumerState<DealDetailPage> {
     final dealPrice = widget.dealResult.dealSalePrice;
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipPath(
-              clipper: DetailCustomClipper(),
-              child: Hero(
-                tag: widget.imageTag,
-                child: ImageDisplay(
-                  url: widget.dealResult.headerImgUrl,
+      appBar: AppBar(
+        title: Text(
+          widget.dealResult.title,
+          style: Theme.of(context).textTheme.headline6,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.start,
+        ),
+      ),
+      body: Stack(
+        children: [
+          SizedBox(
+            height: size.height * .3,
+            width: size.height * .3 * 2,
+            child: Hero(
+              tag: widget.imageTag,
+              child: ImageDisplay(
+                url: widget.dealResult.headerImgUrl,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                ratio: detailHeroRatio,
+                errorWidget: ImageDisplay(
+                  url: widget.dealResult.thumb,
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
                   ratio: detailHeroRatio,
-                  errorWidget: ImageDisplay(
-                    url: widget.dealResult.thumb,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    ratio: detailHeroRatio,
-                    errorWidget: ImagePlaceholder(),
+                  errorWidget: ImagePlaceholder(),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            child: DraggableScrollableSheet(
+              expand: true,
+              initialChildSize: .7,
+              minChildSize: .7,
+              maxChildSize: 1,
+              builder: (context, scrollController) => Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 10,
+                        blurStyle: BlurStyle.inner,
+                        offset: const Offset(0, -1),
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ]),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  controller: scrollController,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Current Deal',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontSize: 15),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        DealListTile(
+                          imageUrl: imageUrl,
+                          title: title,
+                          savings: savings,
+                          normalPrice: normalPrice,
+                          dealPrice: dealPrice,
+                          dealID: widget.dealResult.dealID,
+                        ),
+                        ...detail.when(
+                          initial: () => [],
+                          loadInProgress: () => [],
+                          loadSuccess: (gameInfo) {
+                            return [
+                              if (gameInfo!.deals.isNotEmpty)
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              if (gameInfo.deals.isNotEmpty &&
+                                  gameInfo.deals.length > 1)
+                                Text(
+                                  'Price in Other Stores',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      ?.copyWith(fontSize: 15),
+                                ),
+                              if (gameInfo.deals.isNotEmpty &&
+                                  gameInfo.deals.length == 1)
+                                Text(
+                                  'Price in Other Store',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      ?.copyWith(fontSize: 15),
+                                ),
+                              if (gameInfo.deals.isNotEmpty)
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                              ...gameInfo.deals.map(
+                                (e) {
+                                  final store = ref.watch(storeById(e.storeID));
+                                  if (e.storeID == widget.dealResult.storeID) {
+                                    return Container();
+                                  }
+                                  return DealListTile(
+                                    imageUrl: store?.images.logoUrl ?? '',
+                                    title: store?.storeName ?? '',
+                                    savings: e.dealPercentage,
+                                    normalPrice: e.retailPrice,
+                                    dealPrice: e.price,
+                                    dealID: e.dealID,
+                                  );
+                                },
+                              ).toList(),
+                            ];
+                          },
+                          loadFailure: (_) => [],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      widget.dealResult.title,
-                      style: Theme.of(context).textTheme.headline6,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Current Deal',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(fontSize: 15),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  DealListTile(
-                    imageUrl: imageUrl,
-                    title: title,
-                    savings: savings,
-                    normalPrice: normalPrice,
-                    dealPrice: dealPrice,
-                    dealID: widget.dealResult.dealID,
-                  ),
-                  ...detail.when(
-                    initial: () => [],
-                    loadInProgress: () => [],
-                    loadSuccess: (gameInfo) {
-                      return [
-                        if (gameInfo!.deals.isNotEmpty)
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        if (gameInfo.deals.isNotEmpty &&
-                            gameInfo.deals.length > 1)
-                          Text(
-                            'Price in Other Stores',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                ?.copyWith(fontSize: 15),
-                          ),
-                        if (gameInfo.deals.isNotEmpty &&
-                            gameInfo.deals.length == 1)
-                          Text(
-                            'Price in Other Store',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                ?.copyWith(fontSize: 15),
-                          ),
-                        if (gameInfo.deals.isNotEmpty)
-                          const SizedBox(
-                            height: 5,
-                          ),
-                        ...gameInfo.deals.map(
-                          (e) {
-                            final store = ref.watch(storeById(e.storeID));
-                            if (e.storeID == widget.dealResult.storeID) {
-                              return Container();
-                            }
-                            return DealListTile(
-                              imageUrl: store?.images.logoUrl ?? '',
-                              title: store?.storeName ?? '',
-                              savings: e.dealPercentage,
-                              normalPrice: e.retailPrice,
-                              dealPrice: e.price,
-                              dealID: e.dealID,
-                            );
-                          },
-                        ).toList(),
-                      ];
-                    },
-                    loadFailure: (_) => [],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
